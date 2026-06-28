@@ -1,0 +1,1460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Absolute Dollar Intelligence — Agent Operator Access</title>
+<meta name="description" content="ADSA v7.0 — Augmented Intelligence for intraday momentum traders. Built in Nairobi. 4 years of live trading codified in Pine Script. Not a bot. Not signals. A glass box AI decision support system that lives on your chart." />
+<style>
+  :root {
+    --bg:      #080810;
+    --bg2:     #0d0d1a;
+    --bg3:     #111128;
+    --panel:   #141428;
+    --gold:    #FFD700;
+    --gold2:   #e6c200;
+    --green:   #089981;
+    --red:     #F23645;
+    --blue:    #2157f3;
+    --gray:    #878b94;
+    --white:   #e8e8f0;
+    --muted:   #666680;
+    --border:  #1e1e40;
+    --accent:  rgba(255,215,0,0.08);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--white);
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* ── UTILITY ─────────────────────────────────────────────────────────── */
+  .container { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
+  .tag {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gold);
+    border: 1px solid rgba(255,215,0,0.3);
+    padding: 4px 12px;
+    border-radius: 3px;
+    background: rgba(255,215,0,0.05);
+    margin-bottom: 20px;
+  }
+  .section-title {
+    font-size: clamp(28px, 4vw, 42px);
+    font-weight: 800;
+    line-height: 1.2;
+    margin-bottom: 16px;
+    letter-spacing: -0.5px;
+  }
+  .section-sub {
+    color: var(--gray);
+    font-size: 18px;
+    max-width: 640px;
+    margin-bottom: 48px;
+    line-height: 1.7;
+  }
+  .gold { color: var(--gold); }
+  .green { color: var(--green); }
+  .red { color: var(--red); }
+  .muted { color: var(--muted); }
+  .divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--border), transparent);
+    margin: 80px 0;
+  }
+  section { padding: 80px 0; }
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 14px 32px;
+    border-radius: 6px;
+    font-size: 15px;
+    font-weight: 700;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.2s;
+    border: none;
+    letter-spacing: 0.5px;
+  }
+  .btn-gold {
+    background: var(--gold);
+    color: #000;
+  }
+  .btn-gold:hover { background: var(--gold2); transform: translateY(-1px); box-shadow: 0 8px 32px rgba(255,215,0,0.25); }
+  .btn-outline {
+    background: transparent;
+    color: var(--gold);
+    border: 1.5px solid rgba(255,215,0,0.4);
+  }
+  .btn-outline:hover { border-color: var(--gold); background: rgba(255,215,0,0.06); }
+  .btn-green {
+    background: var(--green);
+    color: #fff;
+  }
+  .btn-green:hover { background: #0ab39e; transform: translateY(-1px); }
+
+  /* ── NAVIGATION ───────────────────────────────────────────────────────── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    background: rgba(8,8,16,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 24px;
+    max-width: 1080px;
+    margin: 0 auto;
+  }
+  .nav-logo {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+  .nav-logo-title {
+    font-size: 14px;
+    font-weight: 800;
+    color: var(--gold);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+  }
+  .nav-logo-sub {
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+    list-style: none;
+  }
+  .nav-links a {
+    color: var(--gray);
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--white); }
+  .nav-cta {
+    padding: 9px 20px;
+    font-size: 13px;
+  }
+  @media (max-width: 700px) {
+    .nav-links { display: none; }
+  }
+
+  /* ── HERO ─────────────────────────────────────────────────────────────── */
+  #hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding-top: 80px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(255,215,0,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,215,0,0.03) 1px, transparent 1px);
+    background-size: 60px 60px;
+    pointer-events: none;
+  }
+  .hero-glow {
+    position: absolute;
+    top: 20%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(255,215,0,0.06) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-content {
+    position: relative;
+    z-index: 1;
+    max-width: 760px;
+  }
+  .hero-pretag {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--green);
+    margin-bottom: 24px;
+  }
+  .hero-pretag::before {
+    content: '';
+    display: inline-block;
+    width: 6px; height: 6px;
+    background: var(--green);
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+  .hero-title {
+    font-size: clamp(38px, 6vw, 72px);
+    font-weight: 900;
+    line-height: 1.1;
+    letter-spacing: -2px;
+    margin-bottom: 24px;
+  }
+  .hero-title span { color: var(--gold); }
+  .hero-sub {
+    font-size: clamp(16px, 2vw, 20px);
+    color: var(--gray);
+    line-height: 1.7;
+    margin-bottom: 40px;
+    max-width: 600px;
+  }
+  .hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-bottom: 56px;
+  }
+  .hero-stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 32px;
+    padding-top: 40px;
+    border-top: 1px solid var(--border);
+  }
+  .stat-item { display: flex; flex-direction: column; gap: 2px; }
+  .stat-value { font-size: 28px; font-weight: 800; color: var(--gold); letter-spacing: -0.5px; }
+  .stat-label { font-size: 12px; color: var(--muted); letter-spacing: 1px; text-transform: uppercase; }
+
+  /* ── TERMINAL CARD ────────────────────────────────────────────────────── */
+  .terminal {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    font-family: 'Courier New', monospace;
+    font-size: 13px;
+  }
+  .terminal-bar {
+    background: var(--panel);
+    padding: 10px 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+  .terminal-dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+  }
+  .terminal-dot.r { background: #ff5f57; }
+  .terminal-dot.y { background: #ffbd2e; }
+  .terminal-dot.g { background: #28ca41; }
+  .terminal-title { color: var(--muted); font-size: 11px; margin-left: 8px; }
+  .terminal-body { padding: 20px; line-height: 1.9; }
+  .t-dim { color: var(--muted); }
+  .t-gold { color: var(--gold); font-weight: 700; }
+  .t-green { color: var(--green); }
+  .t-red { color: var(--red); }
+  .t-blue { color: #4d9fff; }
+  .t-white { color: var(--white); }
+
+  /* ── STORY ────────────────────────────────────────────────────────────── */
+  #story { background: var(--bg2); }
+  .story-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 64px;
+    align-items: start;
+  }
+  @media (max-width: 768px) { .story-grid { grid-template-columns: 1fr; gap: 40px; } }
+  .story-quote {
+    font-size: clamp(22px, 3vw, 30px);
+    font-weight: 700;
+    line-height: 1.4;
+    color: var(--white);
+    border-left: 3px solid var(--gold);
+    padding-left: 24px;
+    margin: 32px 0;
+  }
+  .story-body p {
+    color: var(--gray);
+    font-size: 16px;
+    line-height: 1.8;
+    margin-bottom: 20px;
+  }
+  .story-body strong { color: var(--white); }
+  .timeline {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+  .timeline-item {
+    display: flex;
+    gap: 20px;
+    padding-bottom: 32px;
+    position: relative;
+  }
+  .timeline-item:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    left: 19px;
+    top: 40px;
+    bottom: 0;
+    width: 1px;
+    background: var(--border);
+  }
+  .timeline-dot {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+  .timeline-content h4 { font-size: 15px; font-weight: 700; margin-bottom: 4px; }
+  .timeline-content p { font-size: 13px; color: var(--muted); line-height: 1.6; }
+
+  /* ── WHAT IS THE AGENT ────────────────────────────────────────────────── */
+  #agent { background: var(--bg); }
+  .agent-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    align-items: start;
+  }
+  @media (max-width: 768px) { .agent-grid { grid-template-columns: 1fr; } }
+  .subsystem-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .subsystem-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 14px 16px;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    transition: border-color 0.2s;
+  }
+  .subsystem-item:hover { border-color: rgba(255,215,0,0.3); }
+  .subsystem-num {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--gold);
+    background: rgba(255,215,0,0.08);
+    padding: 2px 7px;
+    border-radius: 3px;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .subsystem-text { font-size: 13px; color: var(--gray); line-height: 1.5; }
+  .subsystem-text strong { color: var(--white); display: block; font-size: 13px; margin-bottom: 2px; }
+  .not-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 32px;
+  }
+  .not-item {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    padding: 14px 16px;
+    border-radius: 6px;
+  }
+  .not-item.no { background: rgba(242,54,69,0.06); border: 1px solid rgba(242,54,69,0.15); }
+  .not-item.yes { background: rgba(8,153,129,0.06); border: 1px solid rgba(8,153,129,0.2); }
+  .not-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+  .not-text { font-size: 14px; color: var(--gray); line-height: 1.5; }
+  .not-text strong { color: var(--white); display: block; margin-bottom: 2px; }
+
+  /* ── PERFORMANCE ──────────────────────────────────────────────────────── */
+  #performance { background: var(--bg2); }
+  .perf-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 40px;
+  }
+  @media (max-width: 600px) { .perf-grid { grid-template-columns: repeat(2, 1fr); } }
+  .perf-cell {
+    background: var(--panel);
+    padding: 28px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .perf-value { font-size: 36px; font-weight: 900; color: var(--gold); letter-spacing: -1px; }
+  .perf-label { font-size: 12px; color: var(--muted); letter-spacing: 1px; text-transform: uppercase; }
+  .perf-sub { font-size: 12px; color: var(--green); font-weight: 600; }
+  .perf-note {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--gold);
+    padding: 16px 20px;
+    border-radius: 6px;
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+  .perf-note strong { color: var(--white); }
+
+  /* ── THE FORMULA ──────────────────────────────────────────────────────── */
+  #formula { background: var(--bg); }
+  .formula-display {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin: 48px 0;
+    font-size: clamp(20px, 3.5vw, 36px);
+    font-weight: 900;
+    letter-spacing: -0.5px;
+  }
+  .formula-part {
+    padding: 16px 28px;
+    border-radius: 8px;
+    text-align: center;
+  }
+  .formula-part.p1 { background: rgba(33,87,243,0.12); border: 1px solid rgba(33,87,243,0.3); color: #4d9fff; }
+  .formula-part.p2 { background: rgba(8,153,129,0.12); border: 1px solid rgba(8,153,129,0.3); color: var(--green); }
+  .formula-part.p3 { background: rgba(255,215,0,0.10); border: 1px solid rgba(255,215,0,0.3); color: var(--gold); }
+  .formula-result { background: var(--panel); border: 1px solid var(--border); color: var(--white); }
+  .formula-op { color: var(--muted); font-weight: 400; }
+  .pockets-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+  @media (max-width: 700px) { .pockets-grid { grid-template-columns: 1fr; } }
+  .pocket-card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 28px 24px;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+  .pocket-card:hover { border-color: rgba(255,215,0,0.3); transform: translateY(-2px); }
+  .pocket-num {
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 12px;
+  }
+  .pocket-title { font-size: 20px; font-weight: 800; margin-bottom: 12px; }
+  .pocket-desc { font-size: 14px; color: var(--muted); line-height: 1.6; }
+  .pocket-rule {
+    margin-top: 16px;
+    padding: 10px 14px;
+    background: rgba(255,215,0,0.05);
+    border-radius: 4px;
+    font-size: 12px;
+    color: var(--gold);
+    font-family: monospace;
+  }
+
+  /* ── 4-LAYER CHAIN ────────────────────────────────────────────────────── */
+  #chain { background: var(--bg2); }
+  .chain-visual {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  .chain-layer {
+    display: flex;
+    align-items: stretch;
+    gap: 0;
+  }
+  .chain-connector {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 48px;
+    flex-shrink: 0;
+  }
+  .chain-dot {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    border: 2px solid;
+    flex-shrink: 0;
+    margin-top: 20px;
+  }
+  .chain-line {
+    width: 2px;
+    flex: 1;
+    min-height: 24px;
+    background: var(--border);
+    margin: 0 auto;
+  }
+  .chain-content {
+    flex: 1;
+    padding: 16px 0 24px 16px;
+  }
+  .chain-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 6px;
+  }
+  .chain-tf {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border-radius: 3px;
+  }
+  .chain-name { font-size: 16px; font-weight: 700; }
+  .chain-desc { font-size: 13px; color: var(--muted); line-height: 1.5; }
+  .chain-layer:nth-child(1) .chain-dot { border-color: var(--gold); background: rgba(255,215,0,0.1); }
+  .chain-layer:nth-child(1) .chain-tf  { background: rgba(255,215,0,0.1); color: var(--gold); }
+  .chain-layer:nth-child(2) .chain-dot { border-color: #4d9fff; background: rgba(77,159,255,0.1); }
+  .chain-layer:nth-child(2) .chain-tf  { background: rgba(77,159,255,0.1); color: #4d9fff; }
+  .chain-layer:nth-child(3) .chain-dot { border-color: var(--green); background: rgba(8,153,129,0.1); }
+  .chain-layer:nth-child(3) .chain-tf  { background: rgba(8,153,129,0.1); color: var(--green); }
+  .chain-layer:nth-child(4) .chain-dot { border-color: var(--red); background: rgba(242,54,69,0.1); }
+  .chain-layer:nth-child(4) .chain-tf  { background: rgba(242,54,69,0.1); color: var(--red); }
+
+  /* ── SCORE TABLE ──────────────────────────────────────────────────────── */
+  .score-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: monospace;
+    font-size: 13px;
+    margin-top: 32px;
+  }
+  .score-table th {
+    padding: 10px 16px;
+    text-align: left;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--muted);
+    background: var(--panel);
+    border-bottom: 1px solid var(--border);
+  }
+  .score-table td { padding: 10px 16px; border-bottom: 1px solid var(--border); }
+  .score-table tr:hover td { background: rgba(255,215,0,0.02); }
+
+  /* ── ACCESS PATHS ─────────────────────────────────────────────────────── */
+  #access { background: var(--bg); }
+  .access-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    margin-top: 48px;
+  }
+  @media (max-width: 800px) { .access-grid { grid-template-columns: 1fr; } }
+  .access-card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 32px 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    transition: border-color 0.2s, transform 0.2s;
+    position: relative;
+  }
+  .access-card:hover { border-color: rgba(255,215,0,0.4); transform: translateY(-3px); }
+  .access-card.featured {
+    border-color: var(--gold);
+    box-shadow: 0 0 0 1px var(--gold), 0 0 48px rgba(255,215,0,0.08);
+  }
+  .access-badge {
+    position: absolute;
+    top: -1px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--gold);
+    color: #000;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 4px 14px;
+    border-radius: 0 0 6px 6px;
+  }
+  .access-icon { font-size: 32px; }
+  .access-type {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .access-title { font-size: 22px; font-weight: 800; color: var(--white); }
+  .access-price {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .access-price-main { font-size: 32px; font-weight: 900; color: var(--gold); }
+  .access-price-sub { font-size: 13px; color: var(--muted); }
+  .access-price-kes { font-size: 14px; color: var(--gray); }
+  .access-features {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .access-features li {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-size: 14px;
+    color: var(--gray);
+    line-height: 1.4;
+  }
+  .access-features li::before {
+    content: '✓';
+    color: var(--green);
+    font-weight: 700;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .access-note {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.5;
+    padding: 10px 14px;
+    background: rgba(255,255,255,0.02);
+    border-radius: 4px;
+    border: 1px solid var(--border);
+  }
+
+  /* ── MASTERCLASS ──────────────────────────────────────────────────────── */
+  #masterclass { background: var(--bg2); }
+  .week-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 16px;
+    margin: 40px 0;
+  }
+  @media (max-width: 700px) { .week-grid { grid-template-columns: repeat(1, 1fr); } }
+  .week-card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 20px 16px;
+    text-align: center;
+    transition: border-color 0.2s;
+  }
+  .week-card:hover { border-color: rgba(255,215,0,0.3); }
+  .week-num {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+  .week-title { font-size: 14px; font-weight: 700; margin-bottom: 8px; }
+  .week-desc { font-size: 12px; color: var(--muted); line-height: 1.5; }
+  .day-row {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px;
+    margin-top: 24px;
+  }
+  @media (max-width: 600px) { .day-row { grid-template-columns: 1fr; } }
+  .day-pill {
+    padding: 8px 12px;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    text-align: center;
+    font-size: 12px;
+  }
+  .day-pill strong { display: block; color: var(--gold); font-size: 11px; letter-spacing: 1px; margin-bottom: 3px; }
+
+  /* ── TELEGRAM ─────────────────────────────────────────────────────────── */
+  #telegram { background: var(--bg); }
+  .tg-card {
+    background: linear-gradient(135deg, var(--panel) 0%, rgba(33,87,243,0.05) 100%);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 48px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .tg-card::before {
+    content: '';
+    position: absolute;
+    top: -40%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(33,87,243,0.07) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .tg-icon { font-size: 48px; margin-bottom: 24px; }
+  .tg-title { font-size: 32px; font-weight: 800; margin-bottom: 12px; }
+  .tg-sub { color: var(--gray); font-size: 16px; max-width: 480px; margin: 0 auto 32px; }
+  .tg-actions { display: flex; justify-content: center; flex-wrap: wrap; gap: 16px; }
+
+  /* ── WHO IS THIS FOR ──────────────────────────────────────────────────── */
+  #who { background: var(--bg2); }
+  .who-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+  @media (max-width: 600px) { .who-grid { grid-template-columns: 1fr; } }
+  .who-card {
+    padding: 24px;
+    border-radius: 8px;
+    font-size: 14px;
+    color: var(--gray);
+    line-height: 1.6;
+  }
+  .who-card.yes { background: rgba(8,153,129,0.06); border: 1px solid rgba(8,153,129,0.2); }
+  .who-card.no  { background: rgba(242,54,69,0.04); border: 1px solid rgba(242,54,69,0.12); }
+  .who-card h4  { font-size: 16px; font-weight: 700; margin-bottom: 12px; }
+  .who-card.yes h4 { color: var(--green); }
+  .who-card.no  h4 { color: var(--red); }
+  .who-card ul  { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+  .who-card li  { display: flex; gap: 10px; }
+
+  /* ── FOOTER ───────────────────────────────────────────────────────────── */
+  footer {
+    background: var(--bg2);
+    border-top: 1px solid var(--border);
+    padding: 40px 0;
+  }
+  .footer-inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+  }
+  .footer-brand { font-size: 13px; color: var(--muted); }
+  .footer-brand strong { color: var(--gold); }
+  .footer-disclaimer { font-size: 11px; color: var(--muted); max-width: 520px; line-height: 1.5; }
+
+  /* ── SMOOTH SCROLL HIGHLIGHT ──────────────────────────────────────────── */
+  :target { scroll-margin-top: 80px; }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════════ NAV ═══ -->
+<nav>
+  <div class="nav-inner">
+    <div class="nav-logo">
+      <span class="nav-logo-title">$ Absolute Dollar</span>
+      <span class="nav-logo-sub">Intelligence · Nairobi</span>
+    </div>
+    <ul class="nav-links">
+      <li><a href="#agent">The Agent</a></li>
+      <li><a href="#formula">The Formula</a></li>
+      <li><a href="#access">Get Access</a></li>
+      <li><a href="#masterclass">Masterclass</a></li>
+    </ul>
+    <a href="#access" class="btn btn-gold nav-cta">Get the Agent</a>
+  </div>
+</nav>
+
+<!-- ═══════════════════════════════════════════════════════ HERO ═══ -->
+<section id="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-glow"></div>
+  <div class="container">
+    <div class="hero-content">
+      <div class="hero-pretag">ADSA v7.0 · Live · Nairobi</div>
+      <h1 class="hero-title">
+        You don't need a guru.<br />
+        You need an <span>agent.</span>
+      </h1>
+      <p class="hero-sub">
+        Four years of live intraday trading. Nine months of codification. The result is ADSA v7.0 —
+        a 17-subsystem augmented intelligence that lives on your TradingView chart, reads five
+        timeframes simultaneously, and tells you exactly why every signal fired or was blocked.
+        Not a bot. Not signals. A glass box AI decision support system.
+      </p>
+      <div class="hero-actions">
+        <a href="#access" class="btn btn-gold">Get the Agent →</a>
+        <a href="#agent" class="btn btn-outline">How it works</a>
+      </div>
+
+      <div class="terminal" style="max-width: 580px;">
+        <div class="terminal-bar">
+          <div class="terminal-dot r"></div>
+          <div class="terminal-dot y"></div>
+          <div class="terminal-dot g"></div>
+          <span class="terminal-title">🚀 ABSOLUTE DOLLAR AGENT — Dashboard Live</span>
+        </div>
+        <div class="terminal-body">
+          <div><span class="t-dim">Score:</span> <span class="t-gold">+9.0/15</span> <span class="t-dim">│</span> <span class="t-dim">Sync:</span> <span class="t-gold">🔥 FULLY ALIGNED: BULLISH (4-LAYER)</span></div>
+          <div><span class="t-dim">ATM</span> <span class="t-green">🟢</span> <span class="t-dim">Regime</span> <span class="t-green">📈</span> <span class="t-dim">V.WAP</span> <span class="t-green">📈</span> <span class="t-dim">Fib</span> <span class="t-green">📈</span></div>
+          <div><span class="t-dim">Daily:</span> <span class="t-white">↔ Inside Range [PDH: 2,358 │ PDL: 2,321]</span></div>
+          <div><span class="t-dim">ATR:</span> <span class="t-gold">High (14.2 pts)</span> <span class="t-dim">│</span> <span class="t-white">👑 LONDON SESSION</span></div>
+          <div style="margin-top:8px"><span class="t-dim"> ├── D  (Sovereign)</span> <span class="t-green">🟢</span> <span class="t-dim">Regime:Long V.WAP:Bull Fib:Bull</span></div>
+          <div><span class="t-dim"> ├── H4 (Anchor)   </span> <span class="t-green">🟢</span> <span class="t-dim">Regime:Long V.WAP:Bull Fib:Bull</span></div>
+          <div><span class="t-dim"> ├── H1            </span> <span class="t-green">🟢</span> <span class="t-dim">Regime:Long V.WAP:Bull Fib:Bull</span></div>
+          <div><span class="t-dim"> ├── M15           </span> <span style="color:#e6c200">🟡</span> <span class="t-dim">Regime:Long V.WAP:Bull Fib:Neut</span></div>
+          <div><span class="t-dim"> └── M5            </span> <span class="t-green">🟢</span> <span class="t-dim">Regime:Long V.WAP:Bull Fib:Bull</span></div>
+          <div style="margin-top:8px"><span class="t-dim">💡 Agent Advice:</span> <span class="t-white">Aggressive entry — 4-layer sovereign aligned.</span></div>
+          <div><span class="t-green">🟢 SYNC BUY</span> <span class="t-dim">│ Entry: 2,340 │ SL: 2,333 │ TP1: 2,347 │ TP3: 2,353</span></div>
+        </div>
+      </div>
+
+      <div class="hero-stats">
+        <div class="stat-item">
+          <span class="stat-value">6.32</span>
+          <span class="stat-label">Profit Factor</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-value gold">+1,448</span>
+          <span class="stat-label">Net Points</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-value green">12W / 3L</span>
+          <span class="stat-label">12-Week Record</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-value">ELITE ✅</span>
+          <span class="stat-label">Performance Rating</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════ STORY ═══ -->
+<section id="story">
+  <div class="container">
+    <div class="story-grid">
+      <div>
+        <div class="tag">The Origin</div>
+        <h2 class="section-title">Built by a trader.<br/>Not a software company.</h2>
+        <div class="story-quote">
+          "I wasn't looking for profits. I was trying to read price with absolute precision."
+        </div>
+        <div class="story-body">
+          <p>
+            My name is Emmanuel. I am a Nairobi-based intraday momentum trader, developer,
+            and founder of Absolute Dollar Intelligence. For four years I clocked in 8-5 in
+            logistics while spending every free hour in the markets — losing, learning, and
+            refusing to quit.
+          </p>
+          <p>
+            I followed gurus. I bought VIP signals. I tried to predict the markets. None of it
+            worked consistently. What broke the pattern was a single question I asked myself:
+            <strong>what confluence actually gives me the confidence to deploy risk-managed capital?</strong>
+          </p>
+          <p>
+            The answer was not an indicator. It was a framework — a structured, repeatable way
+            to read price in its natural fractal form across timeframes. I spent nine months
+            translating that framework into Pine Script v6, line by line, subsystem by subsystem.
+          </p>
+          <p>
+            At the end of my employment contract, I made the executive decision to pivot into
+            full-time trading. ADSA v7.0 is the result. <strong>It works. My codified intelligence works.</strong>
+          </p>
+        </div>
+      </div>
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-connector">
+            <div class="timeline-dot" style="background: var(--panel); border: 1.5px solid var(--muted);"></div>
+            <div style="width:1px; flex:1; background: var(--border); margin: 4px auto 0; min-height: 40px;"></div>
+          </div>
+          <div class="timeline-content" style="padding: 0 0 32px 20px;">
+            <h4>4 Years of Live Trading</h4>
+            <p>XAUUSD, GBPUSD, Deriv synthetics. Real money. Real losses. Real lessons. Learning to read price, not predict it.</p>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-connector">
+            <div class="timeline-dot" style="background: var(--panel); border: 1.5px solid #4d9fff;"></div>
+            <div style="width:1px; flex:1; background: var(--border); margin: 4px auto 0; min-height: 40px;"></div>
+          </div>
+          <div class="timeline-content" style="padding: 0 0 32px 20px;">
+            <h4>9 Months of Codification</h4>
+            <p>The trading framework externalized into Pine Script v6. 3,000+ lines. 17 subsystems. Every concept validated against live market behavior.</p>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-connector">
+            <div class="timeline-dot" style="background: rgba(8,153,129,0.1); border: 1.5px solid var(--green);"></div>
+            <div style="width:1px; flex:1; background: var(--border); margin: 4px auto 0; min-height: 40px;"></div>
+          </div>
+          <div class="timeline-content" style="padding: 0 0 32px 20px;">
+            <h4>ADSA v6 → v7.0</h4>
+            <p>April: v6 launched — logic, approach, sustainability across markets and timeframes validated. May: v7 with live Telegram broadcast + MT5 handshake via TradeSignl EA.</p>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-connector">
+            <div class="timeline-dot" style="background: rgba(255,215,0,0.1); border: 1.5px solid var(--gold);"></div>
+          </div>
+          <div class="timeline-content" style="padding: 0 0 0 20px;">
+            <h4>Full-Time. Absolute Dollar.</h4>
+            <p>Left employment. Stress-tested the agent full-time. June demo: +10% automated. Now: operator mode — the agent fires, the human evaluates and executes.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════ AGENT ═══ -->
+<section id="agent">
+  <div class="container">
+    <div class="tag">The Intelligence</div>
+    <h2 class="section-title">What the agent is.<br/>What it is not.</h2>
+    <div class="agent-grid">
+      <div>
+        <div class="not-list">
+          <div class="not-item no">
+            <span class="not-icon">✕</span>
+            <div class="not-text"><strong>Not an automated trading bot</strong>It does not execute trades. You pull the trigger on your own account.</div>
+          </div>
+          <div class="not-item no">
+            <span class="not-icon">✕</span>
+            <div class="not-text"><strong>Not an LLM or machine learning model</strong>No hallucination. No black box. Every output is derived from codified rules you can inspect.</div>
+          </div>
+          <div class="not-item no">
+            <span class="not-icon">✕</span>
+            <div class="not-text"><strong>Not a signal service</strong>You are not buying buy/sell alerts. You are getting the full intelligence system that generates them.</div>
+          </div>
+          <div class="not-item yes">
+            <span class="not-icon">✓</span>
+            <div class="not-text"><strong>A Glass Box AI Decision Support System</strong>Every signal, every block, every autopsy — the agent explains its reasoning. You can see inside.</div>
+          </div>
+          <div class="not-item yes">
+            <span class="not-icon">✓</span>
+            <div class="not-text"><strong>An augmented intelligence</strong>Your chart-reading skill amplified by a 5-timeframe consensus engine. You operate it. It does the heavy lifting.</div>
+          </div>
+          <div class="not-item yes">
+            <span class="not-icon">✓</span>
+            <div class="not-text"><strong>A Pine Script v6 indicator — runs on free TradingView</strong>No TradingView premium required to run the agent. Paste into Pine Editor. Done.</div>
+          </div>
+        </div>
+      </div>
+      <div class="subsystem-list">
+        <div style="font-size: 12px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); margin-bottom: 8px;">17 Subsystems Inside</div>
+        <div class="subsystem-item"><span class="subsystem-num">1</span><div class="subsystem-text"><strong>Fractal 4-Layer Consensus</strong>Sovereign / Anchor / Filter / Exec reading simultaneously</div></div>
+        <div class="subsystem-item"><span class="subsystem-num">2</span><div class="subsystem-text"><strong>5-Timeframe Scoring Engine</strong>Composite score -15 to +15. Your edge quantified.</div></div>
+        <div class="subsystem-item"><span class="subsystem-num">3</span><div class="subsystem-text"><strong>Glass Box Alert Architecture</strong>Rich reasoning per event — not just direction, but why.</div></div>
+        <div class="subsystem-item"><span class="subsystem-num">4</span><div class="subsystem-text"><strong>Trade Progression Engine</strong>TP1 → TP2 → TP3 → Holder Mode with VWAP trail</div></div>
+        <div class="subsystem-item"><span class="subsystem-num">5</span><div class="subsystem-text"><strong>SL Autopsy Engine</strong>Every stop loss gets a structured loss narrative</div></div>
+        <div class="subsystem-item"><span class="subsystem-num">7</span><div class="subsystem-text"><strong>SMC Engine</strong>BOS, CHoCH, OB, FVG, EQH/EQL, Premium/Discount, Liquidity</div></div>
+        <div class="subsystem-item"><span class="subsystem-num">8</span><div class="subsystem-text"><strong>Adaptive VWAP + Volume Profile + Fibonacci Bands</strong>Swing-anchored VWAP, session VOL profile, ATR-based Fib</div></div>
+        <div class="subsystem-item"><span class="subsystem-num">9</span><div class="subsystem-text"><strong>Platinum Risk Model</strong>Absolute dollar risk → auto lot size. Asset-routed. Precise.</div></div>
+        <div class="subsystem-item"><span class="subsystem-num">10</span><div class="subsystem-text"><strong>Dual Telegram Broadcast</strong>Public sanitised feed + War Room full Glass Box report</div></div>
+        <div class="subsystem-item"><span class="subsystem-num">16–17</span><div class="subsystem-text"><strong>Live P&L Tracker + PDH/PDL Context Engine</strong>Real-time dollar P&L and daily range context per bar</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════ PERFORMANCE ═══ -->
+<section id="performance">
+  <div class="container">
+    <div class="tag">Benchmark Period</div>
+    <h2 class="section-title">The numbers don't lie.<br/>But they need context.</h2>
+    <p class="section-sub">
+      These metrics are from a 12-week benchmark period running the agent on live assets.
+      This is not a promise — it is proof of concept. A system performing at this level
+      is operating correctly. Your results depend on your discipline running the same protocol.
+    </p>
+    <div class="perf-grid">
+      <div class="perf-cell">
+        <span class="perf-value">6.32</span>
+        <span class="perf-label">Profit Factor</span>
+        <span class="perf-sub">ELITE ✅ Rating</span>
+      </div>
+      <div class="perf-cell">
+        <span class="perf-value" style="color: var(--green);">+1,448</span>
+        <span class="perf-label">Net Points</span>
+        <span class="perf-sub">12 weeks cumulative</span>
+      </div>
+      <div class="perf-cell">
+        <span class="perf-value">12W / 3L</span>
+        <span class="perf-label">Win / Loss Record</span>
+        <span class="perf-sub">80% win rate period</span>
+      </div>
+      <div class="perf-cell">
+        <span class="perf-value" style="color: #4d9fff;">2.0+</span>
+        <span class="perf-label">Target RR</span>
+        <span class="perf-sub">TP1 ÷ TP3 protocol</span>
+      </div>
+    </div>
+    <div class="perf-note">
+      <strong>Transparency note:</strong> The benchmark period was stress-testing the agent's logic and approach —
+      not maximising profit. Success at this stage was measured by whether the system's reasoning was sound
+      and whether it sustained edge across different market conditions. The performance figure is real.
+      It is a benchmark, not a guarantee. Consistent results require consistent protocol execution.
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════ FORMULA ═══ -->
+<section id="formula">
+  <div class="container">
+    <div class="tag">The Operator Framework</div>
+    <h2 class="section-title">We are not traders.<br/>We are operators.</h2>
+    <p class="section-sub">
+      The agent fires signals. The operator evaluates them. The account executes them.
+      This is a three-pocket decision framework. Each pocket has hard rules. None can be skipped.
+    </p>
+
+    <div class="formula-display">
+      <div class="formula-part p1">Analysis</div>
+      <div class="formula-op">+</div>
+      <div class="formula-part p2">Capital</div>
+      <div class="formula-op">+</div>
+      <div class="formula-part p3">Execution</div>
+      <div class="formula-op">=</div>
+      <div class="formula-part formula-result">Success</div>
+    </div>
+
+    <div class="pockets-grid">
+      <div class="pocket-card">
+        <div class="pocket-num">Pocket 1</div>
+        <div class="pocket-title" style="color: #4d9fff;">Intelligence</div>
+        <div class="pocket-desc">
+          The agent reads five timeframes simultaneously and produces a composite score from -15 to +15.
+          The operator confirms with a manual top-down chart read. Both must agree before capital is committed.
+        </div>
+        <div class="pocket-rule">Score &lt; ±4 absolute → NO TRADE</div>
+      </div>
+      <div class="pocket-card">
+        <div class="pocket-num">Pocket 2</div>
+        <div class="pocket-title" style="color: var(--green);">Capital</div>
+        <div class="pocket-desc">
+          Absolute dollar risk first. Never lotsize first. The formula is:
+          Risk ($) ÷ (SL distance × contract notional) = position size.
+          The agent computes this. The operator verifies against the risk cheat sheet.
+        </div>
+        <div class="pocket-rule">Risk ($) → Lots. Never: Lots → Risk.</div>
+      </div>
+      <div class="pocket-card">
+        <div class="pocket-num">Pocket 3</div>
+        <div class="pocket-title" style="color: var(--gold);">Execution</div>
+        <div class="pocket-desc">
+          Entry model confirmed on M5/M1. TP protocol set before entry.
+          Counter-trend gate evaluated. Six-check confluence gate passed.
+          Final gate: EXECUTE or SKIP. The operator pulls the trigger.
+        </div>
+        <div class="pocket-rule">6-Check Gate → EXECUTE or SKIP</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════ 4-LAYER CHAIN ═══ -->
+<section id="chain">
+  <div class="container">
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: start;">
+      <div>
+        <div class="tag">The Architecture</div>
+        <h2 class="section-title">Four layers.<br/>One direction.</h2>
+        <p class="section-sub" style="margin-bottom: 32px;">
+          The agent reads price across a 4-layer fractal hierarchy. When all four layers agree,
+          the dashboard shows 🔥 FULLY ALIGNED and fires a SYNC BUY or SYNC SELL — the highest
+          conviction signal the agent produces.
+        </p>
+        <div class="terminal">
+          <div class="terminal-bar">
+            <div class="terminal-dot r"></div><div class="terminal-dot y"></div><div class="terminal-dot g"></div>
+            <span class="terminal-title">Score Distribution</span>
+          </div>
+          <div class="terminal-body">
+            <table class="score-table" style="font-size:12px;">
+              <thead><tr><th>Score</th><th>Agent Reads</th><th>Action</th></tr></thead>
+              <tbody>
+                <tr><td class="t-gold">≥ +10 + High ATR</td><td>SOVEREIGN HIGH MOMENTUM</td><td class="t-green">Aggressive</td></tr>
+                <tr><td class="t-gold">≥ +6</td><td>BULLISH BIAS (Strong)</td><td class="t-green">Execute</td></tr>
+                <tr><td style="color: #e6c200;">≥ +3</td><td>BULLISH BIAS (Moderate)</td><td style="color: #e6c200;">Cautious</td></tr>
+                <tr><td class="t-dim">+1 to +2</td><td>QUIET BULL — WAIT</td><td class="t-dim">Wait</td></tr>
+                <tr><td class="t-dim">0</td><td>NEUTRAL</td><td class="t-red">Skip</td></tr>
+                <tr><td class="t-dim">-1 to -2</td><td>QUIET BEAR — WAIT</td><td class="t-dim">Wait</td></tr>
+                <tr><td style="color: #ff8844;">≤ -3</td><td>BEARISH BIAS (Moderate)</td><td style="color: #ff8844;">Cautious</td></tr>
+                <tr><td class="t-red">≤ -6</td><td>BEARISH BIAS (Strong)</td><td class="t-red">Execute</td></tr>
+                <tr><td class="t-red">≤ -10 + High ATR</td><td>SOVEREIGN HIGH MOMENTUM</td><td class="t-red">Aggressive</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="chain-visual">
+        <div class="chain-layer">
+          <div class="chain-connector">
+            <div class="chain-dot" style="border-color: var(--gold); background: rgba(255,215,0,0.1); margin-top:20px;"></div>
+            <div class="chain-line"></div>
+          </div>
+          <div class="chain-content">
+            <div class="chain-header">
+              <span class="chain-tf" style="background: rgba(255,215,0,0.1); color: var(--gold);">L1</span>
+              <span class="chain-name">Sovereign — Daily / H4</span>
+            </div>
+            <div class="chain-desc">The macro veto layer. Daily bearish = all longs flagged counter-trend. H4 gives the directional leg for the session.</div>
+          </div>
+        </div>
+        <div class="chain-layer">
+          <div class="chain-connector">
+            <div class="chain-dot" style="border-color: #4d9fff; background: rgba(77,159,255,0.1); margin-top:0;"></div>
+            <div class="chain-line"></div>
+          </div>
+          <div class="chain-content">
+            <div class="chain-header">
+              <span class="chain-tf" style="background: rgba(77,159,255,0.1); color: #4d9fff;">L2</span>
+              <span class="chain-name">Anchor — H1</span>
+            </div>
+            <div class="chain-desc">Intraday direction. VWAP swing, BOS/CHoCH, structure, Premium/Discount/Equilibrium zones. The map for the session.</div>
+          </div>
+        </div>
+        <div class="chain-layer">
+          <div class="chain-connector">
+            <div class="chain-dot" style="border-color: var(--green); background: rgba(8,153,129,0.1); margin-top:0;"></div>
+            <div class="chain-line"></div>
+          </div>
+          <div class="chain-content">
+            <div class="chain-header">
+              <span class="chain-tf" style="background: rgba(8,153,129,0.1); color: var(--green);">L3</span>
+              <span class="chain-name">Tactical — M15</span>
+            </div>
+            <div class="chain-desc">The intraday battlefield. BSL, SSL, PDH, PDL, VAH, VAL, POC. Where is the liquidity? Where is price targeting?</div>
+          </div>
+        </div>
+        <div class="chain-layer">
+          <div class="chain-connector">
+            <div class="chain-dot" style="border-color: var(--red); background: rgba(242,54,69,0.1); margin-top:0;"></div>
+          </div>
+          <div class="chain-content">
+            <div class="chain-header">
+              <span class="chain-tf" style="background: rgba(242,54,69,0.1); color: var(--red);">L4</span>
+              <span class="chain-name">Execution — M5 / M1</span>
+            </div>
+            <div class="chain-desc">The trigger layer. ATM signal confirms. Regime filter validates. Dashboard shows SYNC BUY or SYNC SELL. Operator runs the 6-check gate. Execute or skip.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════ WHO ═══ -->
+<section id="who">
+  <div class="container">
+    <div class="tag">Who This Is For</div>
+    <h2 class="section-title">Be honest with yourself.</h2>
+    <p class="section-sub">The agent works. The question is whether the operator is ready to work the agent.</p>
+    <div class="who-grid">
+      <div class="who-card yes">
+        <h4>✓ This is for you if…</h4>
+        <ul>
+          <li><span style="color: var(--green);">✓</span> You have real capital committed to a trading account</li>
+          <li><span style="color: var(--green);">✓</span> You want to understand why signals fire, not just follow them blindly</li>
+          <li><span style="color: var(--green);">✓</span> You are willing to spend 30-45 minutes daily learning the framework</li>
+          <li><span style="color: var(--green);">✓</span> You trade or want to trade intraday on M1, M5, M15</li>
+          <li><span style="color: var(--green);">✓</span> You understand that risk management is not optional</li>
+          <li><span style="color: var(--green);">✓</span> You are prepared to demo trade for at least one week before going live</li>
+          <li><span style="color: var(--green);">✓</span> You want to become a precision operator, not a gambler</li>
+        </ul>
+      </div>
+      <div class="who-card no">
+        <h4>✕ This is not for you if…</h4>
+        <ul>
+          <li><span style="color: var(--red);">✕</span> You want an autopilot that trades for you without your involvement</li>
+          <li><span style="color: var(--red);">✕</span> You are looking for guaranteed returns or a get-rich-quick system</li>
+          <li><span style="color: var(--red);">✕</span> You are not willing to study the masterclass before trading live</li>
+          <li><span style="color: var(--red);">✕</span> You plan to override the agent's score threshold and trade low-probability setups</li>
+          <li><span style="color: var(--red);">✕</span> You do not have a dedicated trading account with real committed capital</li>
+          <li><span style="color: var(--red);">✕</span> You expect results without putting in the work of understanding the system</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════ ACCESS ═══ -->
+<section id="access">
+  <div class="container">
+    <div class="tag">Get Access</div>
+    <h2 class="section-title">Three paths in.<br/>One agent waiting.</h2>
+    <p class="section-sub">
+      Every path delivers the same ADSA v7.0 agent, the masterclass, the risk cheat sheet,
+      and a personal 1-on-1 setup call with Absolute Dollar. The difference is how you enter.
+    </p>
+    <div class="access-grid">
+
+      <!-- PATH 1 -->
+      <div class="access-card featured">
+        <div class="access-badge">Most Popular</div>
+        <div class="access-icon">🌱</div>
+        <div class="access-type">Path 1 — New Deriv Account</div>
+        <div class="access-title">Affiliate Deposit</div>
+        <div class="access-price">
+          <span class="access-price-main">FREE Setup</span>
+          <span class="access-price-sub">With min. $75 deposit via ADI affiliate link</span>
+          <span class="access-price-kes">≈ KES 10,000 minimum</span>
+        </div>
+        <ul class="access-features">
+          <li>Open a new Deriv account through ADI affiliate link</li>
+          <li>Minimum $75 deposit activates your setup</li>
+          <li>ADSA v7.0 delivered via 1-on-1 setup call</li>
+          <li>Full masterclass access (5-week framework)</li>
+          <li>Risk cheat sheet for your trading assets</li>
+          <li>Telegram War Room access (beta phase)</li>
+          <li>Live stream operator sessions on Telegram</li>
+        </ul>
+        <div class="access-note">Your deposit is your trading capital — not a fee. It stays in your account. You own it.</div>
+        <a href="https://t.me/absolutetrademeister" class="btn btn-gold" style="text-align:center; justify-content:center;">Get Started via Telegram →</a>
+      </div>
+
+      <!-- PATH 2 -->
+      <div class="access-card">
+        <div class="access-icon">💼</div>
+        <div class="access-type">Path 2 — Existing Account</div>
+        <div class="access-title">Direct Setup Fee</div>
+        <div class="access-price">
+          <span class="access-price-main">$49</span>
+          <span class="access-price-sub">One-time setup fee</span>
+          <span class="access-price-kes">≈ KES 5,000</span>
+        </div>
+        <ul class="access-features">
+          <li>Already have a Deriv or Pepperstone account</li>
+          <li>Pay the one-time $49 setup fee directly</li>
+          <li>ADSA v7.0 delivered via 1-on-1 setup call</li>
+          <li>Full masterclass access</li>
+          <li>Risk cheat sheet for your assets</li>
+          <li>Telegram access (operator tier)</li>
+        </ul>
+        <div class="access-note">Works on Deriv, Pepperstone, or any broker where you run TradingView alongside your trading platform.</div>
+        <a href="https://t.me/absolutetrademeister" class="btn btn-outline" style="text-align:center; justify-content:center;">Message to Setup →</a>
+      </div>
+
+      <!-- PATH 3 -->
+      <div class="access-card">
+        <div class="access-icon">🏆</div>
+        <div class="access-type">Path 3 — Prop Firm</div>
+        <div class="access-title">Challenge Route</div>
+        <div class="access-price">
+          <span class="access-price-main">FREE Setup</span>
+          <span class="access-price-sub">With SureLeverage or Atlas Funded challenge purchase</span>
+          <span class="access-price-kes">$5K instant or $10K 1-step funded</span>
+        </div>
+        <ul class="access-features">
+          <li>Purchase a SureLeverage or Atlas Funded challenge via ADI link</li>
+          <li>ADSA v7.0 setup included at no additional cost</li>
+          <li>Trade with prop firm capital — not your own</li>
+          <li>Full masterclass access</li>
+          <li>Risk cheat sheet configured for prop firm rules</li>
+          <li>Prop firm accelerator program (coming soon)</li>
+        </ul>
+        <div class="access-note">Recommended: $5K instant funding or $10K 1-step funded account. ADI affiliate links provided on setup call.</div>
+        <a href="https://t.me/absolutetrademeister" class="btn btn-outline" style="text-align:center; justify-content:center;">Discuss Prop Route →</a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════ MASTERCLASS ═══ -->
+<section id="masterclass">
+  <div class="container">
+    <div class="tag">The Education</div>
+    <h2 class="section-title">The 5-week operator<br/>masterclass.</h2>
+    <p class="section-sub">
+      Every operator receives the masterclass — a 5-day repeatable weekly module built by the agent
+      as its own externalization. The goal: you understand how the agent reads price before you trade
+      live. Minimum one week demo trading before going live.
+    </p>
+
+    <div class="week-grid">
+      <div class="week-card">
+        <div class="week-num">Week 1</div>
+        <div class="week-title">Risk Management + Architecture</div>
+        <div class="week-desc">Platinum Risk Model, all 17 subsystems, position sizing, SL autopsy</div>
+      </div>
+      <div class="week-card">
+        <div class="week-num">Week 2</div>
+        <div class="week-title">Top-Down Analysis + VWAP</div>
+        <div class="week-desc">H1 → M15 chain, VWAP swing reading, BOS/CHoCH, Premium/Discount zones</div>
+      </div>
+      <div class="week-card">
+        <div class="week-num">Week 3</div>
+        <div class="week-title">M15 Tactical + Liquidity</div>
+        <div class="week-desc">BSL, SSL, PDH, PDL, VAH, VAL, POC, ATR filter, ranging market kills</div>
+      </div>
+      <div class="week-card">
+        <div class="week-num">Week 4</div>
+        <div class="week-title">M5/M1 Execution</div>
+        <div class="week-desc">Signal lifecycle, 6-check confluence gate, dashboard 60-second read, TP protocol</div>
+      </div>
+      <div class="week-card">
+        <div class="week-num">Week 5</div>
+        <div class="week-title">Trade Management + Integration</div>
+        <div class="week-desc">Operator vs agent roles, full session workflow, PF gate, account progression</div>
+      </div>
+    </div>
+
+    <div class="day-row">
+      <div class="day-pill"><strong>Mon</strong>Concept Day</div>
+      <div class="day-pill"><strong>Tue</strong>Chart Day</div>
+      <div class="day-pill"><strong>Wed</strong>Signal Day</div>
+      <div class="day-pill"><strong>Thu</strong>Risk Day</div>
+      <div class="day-pill"><strong>Fri</strong>Autopsy Day</div>
+    </div>
+
+    <div style="margin-top: 48px; padding: 32px; background: var(--panel); border: 1px solid var(--border); border-radius: 8px; border-left: 3px solid var(--gold);">
+      <div style="font-size: 12px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 16px;">What you receive</div>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; font-size: 14px; color: var(--gray);">
+        <div>✓ 5-week masterclass module (PDF + Markdown)</div>
+        <div>✓ Pre-session analysis card template</div>
+        <div>✓ Execution card (one per trade)</div>
+        <div>✓ Weekly performance journal</div>
+        <div>✓ Risk cheat sheet (XAUUSD, GBPUSD, VOL75)</div>
+        <div>✓ Telegram broadcast card template (agent language)</div>
+        <div>✓ Personal 1:1 setup call with Emmanuel</div>
+        <div>✓ Telegram operator access (public + beta War Room)</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════ TELEGRAM ═══ -->
+<section id="telegram">
+  <div class="container">
+    <div class="tg-card">
+      <div class="tg-icon">📡</div>
+      <h2 class="tg-title">The signal is live.<br/>Join the room.</h2>
+      <p class="tg-sub">
+        The public Telegram channel runs live analysis, pre-session cards, and agent signal briefs —
+        three times a week. The War Room is where operators access the full Glass Box report.
+        Both are in the agent's own language.
+      </p>
+      <div class="tg-actions">
+        <a href="https://t.me/absolutetrademeister" class="btn btn-gold">Join Public Channel →</a>
+        <a href="#access" class="btn btn-outline">Get War Room Access</a>
+      </div>
+      <div style="margin-top: 32px; font-size: 13px; color: var(--muted);">
+        Live stream schedule: London open (10:00 EAT) · Mid-session (12:00 EAT) · NY open (15:00 EAT)
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════ FINAL CTA ═══ -->
+<section style="background: var(--bg2); padding: 80px 0;">
+  <div class="container" style="text-align: center;">
+    <div style="font-size: 48px; margin-bottom: 24px;">$</div>
+    <h2 style="font-size: clamp(32px, 5vw, 56px); font-weight: 900; letter-spacing: -1px; margin-bottom: 20px;">
+      The agent is running.<br/>Are you ready to operate it?
+    </h2>
+    <p style="color: var(--gray); font-size: 18px; max-width: 520px; margin: 0 auto 40px; line-height: 1.7;">
+      One setup call. One agent. One framework. The formula is simple:
+      Analysis + Capital + Execution = Success. Everything in this ecosystem is in service of that.
+    </p>
+    <div style="display: flex; justify-content: center; flex-wrap: wrap; gap: 16px;">
+      <a href="#access" class="btn btn-gold" style="font-size: 17px; padding: 16px 40px;">Get the Agent →</a>
+      <a href="https://t.me/absolutetrademeister" class="btn btn-outline">Join Telegram First</a>
+    </div>
+    <div style="margin-top: 40px; font-size: 13px; color: var(--muted);">
+      Built in Nairobi · ADSA v7.0 · Pine Script v6 · 3,000+ lines · 17 Subsystems
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════ FOOTER ═══ -->
+<footer>
+  <div class="container">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <strong>Absolute Dollar Intelligence</strong><br />
+        <span>Nairobi, Kenya · 2026 · Emmanuel</span>
+      </div>
+      <div class="footer-disclaimer">
+        ADSA v7.0 is an educational and decision-support tool for informed traders.
+        All trading carries risk. Past performance benchmarks do not guarantee future results.
+        You are responsible for your own capital. Not financial advice.
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Smooth active state for nav links
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('.nav-links a');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        navLinks.forEach(l => {
+          l.style.color = l.getAttribute('href') === '#' + e.target.id ? '#fff' : '';
+        });
+      }
+    });
+  }, { threshold: 0.4 });
+  sections.forEach(s => observer.observe(s));
+
+  // Animate stat counters in hero
+  const stats = document.querySelectorAll('.stat-value');
+  const animateStats = (entries, obs) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.style.opacity = '1';
+        entry.target.style.transform = 'translateY(0)';
+        obs.unobserve(entry.target);
+      }
+    });
+  };
+  const statObs = new IntersectionObserver(animateStats, { threshold: 0.3 });
+  stats.forEach(s => {
+    s.style.opacity = '0';
+    s.style.transform = 'translateY(12px)';
+    s.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+    statObs.observe(s);
+  });
+</script>
+
+</body>
+</html>
