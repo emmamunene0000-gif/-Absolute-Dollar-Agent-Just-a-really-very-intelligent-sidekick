@@ -3,590 +3,487 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Absolute Dollar Intelligence — Become an Operator</title>
-<meta name="description" content="The Absolute Dollar Agent is a precision intraday decision support system built by a Nairobi trader over 4 years. The code is not the product. The intelligence is." />
+<title>Absolute Dollar Intelligence — Operator Access</title>
+<meta name="description" content="The Absolute Dollar Agent. Built in Nairobi. 4 years in the markets, 9 months in code. We are operators, not traders." />
 <style>
 :root {
-  --bg:     #07070f;
-  --bg2:    #0b0b18;
-  --panel:  #0f0f20;
-  --panel2: #13132a;
-  --gold:   #FFD700;
-  --gold2:  #d4aa00;
-  --gold3:  rgba(255,215,0,0.08);
-  --gold4:  rgba(255,215,0,0.15);
-  --green:  #089981;
-  --green2: rgba(8,153,129,0.12);
-  --red:    #F23645;
-  --red2:   rgba(242,54,69,0.12);
-  --white:  #e8e8f2;
-  --gray:   #8888a4;
-  --muted:  #55557a;
-  --border: #1a1a38;
+  --bg:    #07070f;
+  --bg2:   #0a0a16;
+  --panel: #0e0e1e;
+  --p2:    #12122a;
+  --gold:  #FFD700;
+  --goldm: rgba(255,215,0,0.12);
+  --goldf: rgba(255,215,0,0.04);
+  --green: #089981;
+  --greenm:rgba(8,153,129,0.12);
+  --red:   #F23645;
+  --redm:  rgba(242,54,69,0.12);
+  --white: #e8e8f2;
+  --gray:  #8080a0;
+  --muted: #50506e;
+  --bdr:   #18183a;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 html{scroll-behavior:smooth;}
-body{
-  background:var(--bg);
-  color:var(--white);
-  font-family:'Segoe UI',system-ui,-apple-system,sans-serif;
-  font-size:16px;
-  line-height:1.65;
-  overflow-x:hidden;
-}
+body{background:var(--bg);color:var(--white);font-family:'Segoe UI',system-ui,-apple-system,sans-serif;font-size:16px;line-height:1.65;overflow-x:hidden;}
 
-/* ── UTILITY ── */
-.container{max-width:1060px;margin:0 auto;padding:0 24px;}
-.tag{
-  display:inline-block;
-  font-size:10px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;
-  color:var(--gold);border:1px solid rgba(255,215,0,0.25);
-  padding:4px 12px;border-radius:2px;background:var(--gold3);
-  margin-bottom:18px;
-}
+.container{max-width:1040px;margin:0 auto;padding:0 24px;}
 .gold{color:var(--gold);}
 .green{color:var(--green);}
 .red{color:var(--red);}
-.muted{color:var(--gray);}
-hr.rule{border:none;border-top:1px solid var(--border);margin:0;}
+.muted{color:var(--muted);}
+.tag{display:inline-block;font-size:10px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--gold);border:1px solid rgba(255,215,0,0.2);padding:4px 12px;border-radius:2px;background:var(--goldf);margin-bottom:20px;}
 
-/* ── NAV ── */
-nav{
-  position:fixed;top:0;left:0;right:0;z-index:100;
-  background:rgba(7,7,15,0.92);backdrop-filter:blur(12px);
-  border-bottom:1px solid var(--border);
-  padding:0 24px;height:56px;
-  display:flex;align-items:center;justify-content:space-between;
-}
-.nav-logo{
-  font-size:13px;font-weight:700;letter-spacing:1.5px;
-  text-transform:uppercase;color:var(--gold);
-  text-decoration:none;
-}
-.nav-logo span{color:var(--white);font-weight:400;}
-.nav-cta{
-  display:inline-flex;align-items:center;gap:8px;
-  background:var(--gold);color:#07070f;
-  font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;
-  padding:8px 18px;border-radius:3px;text-decoration:none;
-  transition:background 0.2s;
-}
-.nav-cta:hover{background:var(--gold2);}
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(7,7,15,0.95);backdrop-filter:blur(16px);border-bottom:1px solid var(--bdr);padding:0 24px;height:54px;display:flex;align-items:center;justify-content:space-between;}
+.nav-logo{font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gold);text-decoration:none;}
+.nav-logo span{color:var(--gray);font-weight:400;}
+.nav-live{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--green);letter-spacing:1px;}
+.nav-live::before{content:'●';animation:pulse 2s ease-in-out infinite;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.3;}}
+.nav-cta{display:inline-flex;align-items:center;gap:8px;background:var(--gold);color:#07070f;font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:8px 18px;border-radius:2px;text-decoration:none;transition:background .15s;}
+.nav-cta:hover{background:#e6c200;}
 
-/* ── HERO ── */
-.hero{
-  min-height:100vh;display:flex;align-items:center;
-  padding:100px 24px 80px;
-  position:relative;overflow:hidden;
-}
-.hero::before{
-  content:'';position:absolute;inset:0;
-  background:radial-gradient(ellipse 60% 50% at 50% 0%, rgba(255,215,0,0.04) 0%, transparent 70%);
-  pointer-events:none;
-}
-.hero-inner{
-  max-width:1060px;margin:0 auto;width:100%;
-  display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center;
-}
-.hero-eyebrow{
-  font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;
-  color:var(--gold);margin-bottom:20px;
-  display:flex;align-items:center;gap:10px;
-}
-.hero-eyebrow::before{content:'';width:24px;height:1px;background:var(--gold);}
-h1{
-  font-size:clamp(36px,5vw,58px);font-weight:800;line-height:1.1;
-  margin-bottom:24px;letter-spacing:-1px;
-}
-h1 em{
-  font-style:normal;color:var(--gold);
-  display:block;
-}
-.hero-sub{
-  font-size:18px;color:var(--gray);line-height:1.7;
-  margin-bottom:36px;max-width:480px;
-}
-.hero-sub strong{color:var(--white);}
-.hero-actions{display:flex;flex-direction:column;gap:12px;align-items:flex-start;}
-.btn-primary{
-  display:inline-flex;align-items:center;gap:10px;
-  background:var(--gold);color:#07070f;
-  font-size:14px;font-weight:700;letter-spacing:0.5px;
-  padding:14px 28px;border-radius:3px;text-decoration:none;
-  transition:background 0.2s,transform 0.15s;
-}
-.btn-primary:hover{background:var(--gold2);transform:translateY(-1px);}
-.btn-primary svg{width:16px;height:16px;}
-.hero-note{font-size:12px;color:var(--muted);}
+/* HERO */
+.hero{min-height:100vh;display:flex;align-items:center;padding:88px 24px 64px;position:relative;overflow:hidden;}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 50% -10%, rgba(255,215,0,0.03) 0%, transparent 65%);pointer-events:none;}
+.hero-inner{max-width:1040px;margin:0 auto;width:100%;display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center;}
+.hero-stamp{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:16px;display:flex;align-items:center;gap:10px;}
+.hero-stamp::before{content:'';width:20px;height:1px;background:var(--muted);}
+h1{font-size:clamp(30px,4.5vw,52px);font-weight:900;line-height:1.08;letter-spacing:-1.5px;margin-bottom:22px;}
+h1 .break{display:block;}
+h1 .accent{color:var(--gold);}
+.hero-body{font-size:16px;color:var(--gray);line-height:1.75;margin-bottom:12px;}
+.hero-body strong{color:var(--white);}
+.hero-quote{border-left:2px solid var(--gold);padding:14px 20px;margin:24px 0;font-size:15px;color:var(--gray);font-style:italic;background:var(--goldf);}
+.hero-quote strong{color:var(--white);font-style:normal;}
+.hero-cta-wrap{display:flex;flex-direction:column;gap:10px;align-items:flex-start;margin-top:28px;}
+.btn-main{display:inline-flex;align-items:center;gap:10px;background:var(--gold);color:#07070f;font-size:13px;font-weight:700;letter-spacing:.5px;padding:14px 28px;border-radius:2px;text-decoration:none;transition:background .15s,transform .1s;}
+.btn-main:hover{background:#e6c200;transform:translateY(-1px);}
+.hero-sub-note{font-size:12px;color:var(--muted);}
 
-/* ── TERMINAL ── */
-.terminal{
-  background:var(--panel);border:1px solid var(--border);
-  border-radius:6px;overflow:hidden;font-family:'Courier New',monospace;
-  font-size:12px;line-height:1.7;
-}
-.terminal-bar{
-  background:var(--panel2);border-bottom:1px solid var(--border);
-  padding:10px 16px;display:flex;align-items:center;gap:8px;
-}
-.t-dot{width:10px;height:10px;border-radius:50%;}
-.t-dot.r{background:#ff5f57;}.t-dot.y{background:#febc2e;}.t-dot.g{background:#28c840;}
-.terminal-title{font-size:11px;color:var(--muted);margin-left:auto;letter-spacing:1px;}
-.terminal-body{padding:20px 18px;}
-.t-dim{color:var(--muted);}
+/* TERMINAL */
+.terminal{background:var(--panel);border:1px solid var(--bdr);border-radius:4px;overflow:hidden;font-family:'Courier New',Consolas,monospace;font-size:11.5px;line-height:1.65;}
+.tbar{background:var(--p2);border-bottom:1px solid var(--bdr);padding:9px 14px;display:flex;align-items:center;gap:7px;}
+.td{width:9px;height:9px;border-radius:50%;}
+.td.r{background:#ff5f57;}.td.y{background:#febc2e;}.td.g{background:#28c840;}
+.ttitle{font-size:10px;color:var(--muted);margin-left:auto;letter-spacing:.8px;}
+.tbody{padding:16px 16px 20px;}
+.tl{display:block;}
+.t-sep{color:var(--bdr);display:block;margin:5px 0;}
 .t-gold{color:var(--gold);}
 .t-green{color:var(--green);}
 .t-red{color:var(--red);}
-.t-white{color:var(--white);}
-.t-line{display:block;margin-bottom:2px;}
-.t-sep{color:#2a2a50;display:block;margin:6px 0;}
-.blink{animation:blink 1.2s step-end infinite;}
+.t-dim{color:var(--muted);}
+.t-w{color:var(--white);}
+.t-gray{color:var(--gray);}
+.blink{animation:blink 1.1s step-end infinite;}
 @keyframes blink{0%,100%{opacity:1;}50%{opacity:0;}}
 
-/* ── SECTIONS ── */
-section{padding:100px 0;}
-section.tight{padding:72px 0;}
-.section-header{text-align:center;margin-bottom:64px;}
-.section-header h2{font-size:clamp(28px,4vw,42px);font-weight:800;line-height:1.2;margin-bottom:16px;}
-.section-header p{font-size:18px;color:var(--gray);max-width:560px;margin:0 auto;}
+/* POSITIONS */
+.pos-block{margin:6px 0;padding:10px 0;border-top:1px solid var(--bdr);}
+.pos-id{color:var(--muted);font-size:10px;}
+.pos-row{display:flex;justify-content:space-between;margin-top:2px;}
+.pos-pnl-pos{color:var(--green);font-weight:700;}
+.pos-pnl-neg{color:var(--red);}
+.pos-status{color:var(--gold);font-size:10px;}
 
-/* ── STORY ── */
-.story-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start;}
-.story-text h2{font-size:clamp(26px,3.5vw,38px);font-weight:800;line-height:1.2;margin-bottom:24px;}
-.story-text p{color:var(--gray);margin-bottom:18px;font-size:16px;line-height:1.75;}
+/* SECTION */
+section{padding:88px 0;}
+section.tight{padding:64px 0;}
+.sec-head{margin-bottom:56px;}
+.sec-head h2{font-size:clamp(26px,3.5vw,40px);font-weight:800;line-height:1.15;margin-bottom:14px;letter-spacing:-.5px;}
+.sec-head p{font-size:16px;color:var(--gray);max-width:560px;line-height:1.75;}
+.sec-head.center{text-align:center;}
+.sec-head.center p{margin:0 auto;}
+
+/* ANALYSIS CARDS */
+.cards-intro{background:var(--panel);border:1px solid var(--bdr);border-radius:4px;padding:28px 32px;margin-bottom:32px;}
+.cards-intro p{font-size:15px;color:var(--gray);line-height:1.75;}
+.cards-intro p strong{color:var(--white);}
+.cards-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.analysis-card{background:var(--panel);border:1px solid var(--bdr);border-radius:4px;overflow:hidden;font-family:'Courier New',Consolas,monospace;font-size:11px;line-height:1.7;}
+.ac-head{background:var(--p2);border-bottom:1px solid var(--bdr);padding:10px 16px;display:flex;justify-content:space-between;align-items:center;}
+.ac-tf{font-size:13px;font-weight:700;color:var(--white);}
+.ac-role{font-size:9px;letter-spacing:1.5px;text-transform:uppercase;padding:3px 8px;border-radius:2px;font-weight:700;}
+.ac-role.sovereign{background:var(--redm);color:var(--red);}
+.ac-role.anchor{background:var(--greenm);color:var(--green);}
+.ac-role.filter{background:var(--redm);color:var(--red);}
+.ac-role.exec{background:var(--goldm);color:var(--gold);}
+.ac-body{padding:14px 16px;}
+.ac-row{display:grid;grid-template-columns:90px 1fr;gap:8px;margin-bottom:3px;}
+.ac-label{color:var(--muted);}
+.ac-val{color:var(--white);}
+.ac-val.bear{color:var(--red);}
+.ac-val.bull{color:var(--green);}
+.ac-val.neut{color:var(--gold);}
+.ac-sep{border:none;border-top:1px solid var(--bdr);margin:10px 0;}
+.ac-liq-label{color:var(--muted);font-size:10px;letter-spacing:1px;text-transform:uppercase;margin-bottom:6px;display:block;}
+.ac-bias{margin-top:10px;font-size:12px;font-weight:700;padding:8px 12px;border-radius:2px;display:inline-block;}
+.ac-bias.bear{background:var(--redm);color:var(--red);}
+.ac-bias.bull{background:var(--greenm);color:var(--green);}
+.ac-bias.wait{background:var(--goldm);color:var(--gold);}
+
+/* STORY */
+.story-grid{display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:start;}
+.story-text p{color:var(--gray);margin-bottom:18px;font-size:15px;line-height:1.8;}
 .story-text p strong{color:var(--white);}
-.story-text p.highlight{
-  color:var(--white);font-size:17px;font-style:italic;
-  border-left:3px solid var(--gold);padding-left:18px;margin:28px 0;
-}
-.timeline{display:flex;flex-direction:column;gap:0;}
-.tl-item{
-  display:flex;gap:20px;padding-bottom:32px;
-  position:relative;
-}
-.tl-item:not(:last-child)::after{
-  content:'';position:absolute;left:16px;top:36px;bottom:0;
-  width:1px;background:var(--border);
-}
-.tl-dot{
-  width:32px;height:32px;border-radius:50%;flex-shrink:0;
-  border:2px solid var(--border);background:var(--panel);
-  display:flex;align-items:center;justify-content:center;
-  font-size:13px;z-index:1;
-}
-.tl-dot.active{border-color:var(--gold);background:var(--gold3);}
-.tl-content{}
-.tl-label{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:4px;}
-.tl-text{font-size:14px;color:var(--gray);line-height:1.6;}
-.tl-text strong{color:var(--white);}
+.story-text p.raw{font-size:15px;color:var(--white);border-left:2px solid var(--gold);padding-left:18px;background:var(--goldf);padding:14px 18px;margin:24px 0;}
+.tl{display:flex;flex-direction:column;}
+.tl-item{display:flex;gap:16px;padding-bottom:28px;position:relative;}
+.tl-item:not(:last-child)::after{content:'';position:absolute;left:14px;top:32px;bottom:0;width:1px;background:var(--bdr);}
+.tl-dot{width:28px;height:28px;border-radius:50%;flex-shrink:0;border:1px solid var(--bdr);background:var(--panel);display:flex;align-items:center;justify-content:center;font-size:12px;z-index:1;}
+.tl-dot.on{border-color:var(--gold);background:var(--goldf);}
+.tl-yr{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:3px;}
+.tl-copy{font-size:13px;color:var(--gray);line-height:1.65;}
+.tl-copy strong{color:var(--white);}
 
-/* ── JET QUOTE ── */
-.jet-quote{
-  background:var(--panel);border:1px solid var(--border);
-  border-left:3px solid var(--gold);
-  border-radius:0 6px 6px 0;
-  padding:40px 48px;text-align:center;
-  margin:80px 0;
-}
-.jet-quote blockquote{
-  font-size:clamp(22px,3vw,34px);font-weight:700;line-height:1.3;
-  color:var(--white);margin-bottom:16px;
-}
-.jet-quote blockquote em{color:var(--gold);font-style:normal;}
-.jet-quote cite{font-size:13px;color:var(--muted);letter-spacing:1px;}
+/* BIG QUOTE */
+.big-quote{padding:72px 0;text-align:center;border-top:1px solid var(--bdr);border-bottom:1px solid var(--bdr);background:var(--bg2);}
+.big-quote blockquote{font-size:clamp(20px,3vw,36px);font-weight:800;line-height:1.3;max-width:760px;margin:0 auto 16px;letter-spacing:-.5px;}
+.big-quote blockquote em{color:var(--gold);font-style:normal;}
+.big-quote cite{font-size:12px;color:var(--muted);letter-spacing:1px;}
 
-/* ── WHAT IS THE AGENT ── */
-.agent-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:64px;}
-.agent-card{
-  background:var(--panel);border:1px solid var(--border);
-  border-radius:6px;padding:32px;
-}
-.agent-card.no{border-top:2px solid var(--red);}
-.agent-card.yes{border-top:2px solid var(--green);}
-.agent-card h3{
-  font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;
-  margin-bottom:20px;
-}
-.agent-card.no h3{color:var(--red);}
-.agent-card.yes h3{color:var(--green);}
-.agent-card ul{list-style:none;display:flex;flex-direction:column;gap:12px;}
-.agent-card li{font-size:14px;color:var(--gray);display:flex;gap:10px;align-items:flex-start;}
-.agent-card li::before{flex-shrink:0;margin-top:2px;}
-.agent-card.no li::before{content:'✗';color:var(--red);}
-.agent-card.yes li::before{content:'✓';color:var(--green);}
-.agent-card li strong{color:var(--white);}
+/* WHAT IT IS */
+.what-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:48px;}
+.what-card{background:var(--panel);border:1px solid var(--bdr);border-radius:4px;padding:28px;}
+.what-card.no{border-top:2px solid var(--red);}
+.what-card.yes{border-top:2px solid var(--green);}
+.what-card h3{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:18px;}
+.what-card.no h3{color:var(--red);}
+.what-card.yes h3{color:var(--green);}
+.what-card ul{list-style:none;display:flex;flex-direction:column;gap:10px;}
+.what-card li{font-size:13px;color:var(--gray);display:flex;gap:8px;line-height:1.6;}
+.what-card.no li::before{content:'✗';color:var(--red);flex-shrink:0;}
+.what-card.yes li::before{content:'✓';color:var(--green);flex-shrink:0;}
+.what-card li strong{color:var(--white);}
 
-.systems-grid{
-  display:grid;grid-template-columns:repeat(3,1fr);gap:12px;
-  margin-top:48px;
-}
-.sys-item{
-  background:var(--panel);border:1px solid var(--border);
-  border-radius:4px;padding:16px;
-  font-size:13px;color:var(--gray);
-}
-.sys-item span{display:block;color:var(--gold);font-size:10px;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:4px;}
-
-/* ── FORMULA ── */
-.formula-section{background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border);}
-.formula-display{
-  text-align:center;
-  font-size:clamp(18px,3vw,32px);font-weight:800;
-  letter-spacing:-0.5px;margin-bottom:64px;
-  color:var(--white);
-}
-.formula-display .op{color:var(--muted);margin:0 16px;}
-.formula-display .var{color:var(--gold);}
-.formula-display .result{color:var(--green);}
-.pockets{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;}
-.pocket{
-  background:var(--panel);border:1px solid var(--border);
-  border-radius:6px;padding:32px;text-align:center;
-}
-.pocket-num{
-  width:40px;height:40px;border-radius:50%;
-  background:var(--gold3);border:1px solid rgba(255,215,0,0.3);
-  display:flex;align-items:center;justify-content:center;
-  font-size:14px;font-weight:700;color:var(--gold);
-  margin:0 auto 16px;
-}
-.pocket h3{font-size:16px;font-weight:700;margin-bottom:8px;}
-.pocket p{font-size:14px;color:var(--gray);line-height:1.6;}
+/* FORMULA */
+.formula-section{background:var(--bg2);border-top:1px solid var(--bdr);border-bottom:1px solid var(--bdr);}
+.formula-big{text-align:center;font-size:clamp(16px,2.5vw,28px);font-weight:800;letter-spacing:-.5px;margin-bottom:12px;}
+.formula-big .fv{color:var(--gold);}
+.formula-big .fo{color:var(--muted);margin:0 14px;}
+.formula-big .fr{color:var(--green);}
+.formula-applied{background:var(--panel);border:1px solid var(--bdr);border-radius:4px;padding:24px 28px;margin-bottom:48px;font-family:'Courier New',monospace;font-size:12px;line-height:1.8;}
+.pockets{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+.pocket{background:var(--panel);border:1px solid var(--bdr);border-radius:4px;padding:28px 24px;}
+.p-num{width:36px;height:36px;border-radius:50%;background:var(--goldf);border:1px solid rgba(255,215,0,.25);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:var(--gold);margin-bottom:14px;}
+.pocket h3{font-size:14px;font-weight:700;margin-bottom:8px;}
+.pocket p{font-size:13px;color:var(--gray);line-height:1.65;}
 .pocket p strong{color:var(--white);}
 
-/* ── 4-LAYER CHAIN ── */
-.chain{display:flex;flex-direction:column;gap:0;max-width:720px;margin:0 auto 64px;}
-.chain-item{
-  background:var(--panel);border:1px solid var(--border);
-  padding:24px 32px;display:grid;grid-template-columns:80px 1fr auto;
-  gap:24px;align-items:center;position:relative;
-}
-.chain-item:not(:first-child){border-top:none;}
-.chain-item:first-child{border-radius:6px 6px 0 0;}
-.chain-item:last-child{border-radius:0 0 6px 6px;}
-.chain-layer{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gold);}
-.chain-tf{font-size:22px;font-weight:800;color:var(--white);}
-.chain-desc{font-size:13px;color:var(--gray);}
-.chain-desc strong{display:block;color:var(--white);margin-bottom:2px;}
-.chain-role{
-  font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;
-  color:var(--muted);border:1px solid var(--border);
-  padding:4px 10px;border-radius:2px;white-space:nowrap;
-}
-.connector{
-  width:1px;height:20px;background:var(--border);
-  margin:0 auto;
-}
-
-.score-table{
-  background:var(--panel);border:1px solid var(--border);
-  border-radius:6px;overflow:hidden;width:100%;border-collapse:collapse;
-  margin-top:48px;
-}
-.score-table th{
-  background:var(--panel2);font-size:11px;letter-spacing:1.5px;text-transform:uppercase;
-  color:var(--muted);padding:14px 20px;text-align:left;border-bottom:1px solid var(--border);
-}
-.score-table td{padding:14px 20px;font-size:14px;border-bottom:1px solid var(--border);}
+/* SCORE TABLE */
+.score-table{width:100%;border-collapse:collapse;background:var(--panel);border:1px solid var(--bdr);border-radius:4px;overflow:hidden;}
+.score-table th{background:var(--p2);font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);padding:12px 18px;text-align:left;border-bottom:1px solid var(--bdr);}
+.score-table td{padding:12px 18px;font-size:13px;border-bottom:1px solid var(--bdr);}
 .score-table tr:last-child td{border-bottom:none;}
 .score-table td:first-child{font-family:'Courier New',monospace;color:var(--gold);font-weight:700;}
-.score-table td:nth-child(2){color:var(--white);}
-.score-table td:nth-child(3){color:var(--gray);font-size:13px;}
 
-/* ── PROOF ── */
-.proof-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:48px;}
-.proof-card{
-  background:var(--panel);border:1px solid var(--border);
-  border-radius:6px;padding:28px 20px;text-align:center;
-}
-.proof-num{font-size:36px;font-weight:800;color:var(--gold);line-height:1;margin-bottom:6px;}
-.proof-label{font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);}
-.proof-note{
-  background:var(--panel2);border:1px solid var(--border);
-  border-radius:6px;padding:20px 28px;
-  font-size:13px;color:var(--muted);text-align:center;
-}
-.proof-note strong{color:var(--gray);}
+/* PATHS */
+.paths{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+.path{background:var(--panel);border:1px solid var(--bdr);border-radius:4px;padding:32px 26px;display:flex;flex-direction:column;}
+.path.featured{border-color:rgba(255,215,0,.35);}
+.p-badge{font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:3px 9px;border-radius:2px;display:inline-block;margin-bottom:18px;align-self:flex-start;}
+.p-badge.pop{background:var(--greenm);color:var(--green);}
+.p-badge.fee{background:var(--goldm);color:var(--gold);}
+.p-badge.prop{background:rgba(100,130,255,.1);color:#8aabff;}
+.path h3{font-size:18px;font-weight:800;margin-bottom:6px;}
+.path-price{font-size:30px;font-weight:900;color:var(--gold);line-height:1;margin-bottom:4px;}
+.path-note{font-size:12px;color:var(--muted);margin-bottom:22px;line-height:1.5;}
+.path-div{border:none;border-top:1px solid var(--bdr);margin-bottom:20px;}
+.path ul{list-style:none;display:flex;flex-direction:column;gap:9px;flex:1;}
+.path li{font-size:12px;color:var(--gray);display:flex;gap:8px;line-height:1.5;}
+.path li::before{content:'✓';color:var(--green);flex-shrink:0;}
+.path li strong{color:var(--white);}
+.path-btn{display:block;text-align:center;margin-top:24px;padding:12px;border-radius:2px;font-size:12px;font-weight:700;letter-spacing:.5px;text-decoration:none;transition:all .15s;}
+.path-btn.gold{background:var(--gold);color:#07070f;}
+.path-btn.gold:hover{background:#e6c200;}
+.path-btn.line{border:1px solid var(--bdr);color:var(--white);}
+.path-btn.line:hover{border-color:var(--gold);color:var(--gold);}
 
-/* ── WHO IS THIS FOR ── */
-.for-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;}
-.for-card{
-  background:var(--panel);border:1px solid var(--border);border-radius:6px;padding:32px;
-}
-.for-card.yes{border-top:2px solid var(--green);}
-.for-card.no{border-top:2px solid var(--red);}
-.for-card h3{font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:20px;}
-.for-card.yes h3{color:var(--green);}
-.for-card.no h3{color:var(--red);}
-.for-card ul{list-style:none;display:flex;flex-direction:column;gap:12px;}
-.for-card li{font-size:14px;color:var(--gray);display:flex;gap:10px;line-height:1.5;}
-.for-card.yes li::before{content:'✓';color:var(--green);flex-shrink:0;}
-.for-card.no li::before{content:'✗';color:var(--red);flex-shrink:0;}
+/* TG SECTION */
+.tg-block{background:var(--bg2);border-top:1px solid var(--bdr);border-bottom:1px solid var(--bdr);padding:88px 24px;text-align:center;}
+.tg-block h2{font-size:clamp(26px,4vw,44px);font-weight:800;margin-bottom:14px;letter-spacing:-.5px;}
+.tg-block p{font-size:16px;color:var(--gray);max-width:520px;margin:0 auto 32px;line-height:1.75;}
+.tg-btn{display:inline-flex;align-items:center;gap:12px;background:var(--gold);color:#07070f;font-size:14px;font-weight:700;padding:15px 34px;border-radius:2px;text-decoration:none;transition:background .15s,transform .1s;}
+.tg-btn:hover{background:#e6c200;transform:translateY(-1px);}
+.tg-live-badge{display:inline-flex;align-items:center;gap:6px;font-size:11px;color:var(--green);margin-top:14px;letter-spacing:1px;}
+.tg-live-badge::before{content:'●';animation:pulse 2s ease-in-out infinite;}
 
-/* ── ACCESS PATHS ── */
-.paths{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;}
-.path-card{
-  background:var(--panel);border:1px solid var(--border);
-  border-radius:6px;padding:36px 28px;display:flex;flex-direction:column;
-}
-.path-card.featured{
-  border-color:rgba(255,215,0,0.4);
-  background:linear-gradient(160deg,var(--panel) 0%,rgba(255,215,0,0.03) 100%);
-}
-.path-badge{
-  font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;
-  padding:4px 10px;border-radius:2px;display:inline-block;margin-bottom:20px;align-self:flex-start;
-}
-.path-badge.free{background:var(--green2);color:var(--green);}
-.path-badge.direct{background:var(--gold3);color:var(--gold);}
-.path-badge.prop{background:rgba(33,87,243,0.1);color:#6b9fff;}
-.path-card h3{font-size:20px;font-weight:800;margin-bottom:8px;}
-.path-price{font-size:32px;font-weight:800;color:var(--gold);line-height:1;margin-bottom:4px;}
-.path-price-note{font-size:13px;color:var(--muted);margin-bottom:24px;}
-.path-divider{border:none;border-top:1px solid var(--border);margin:0 0 24px;}
-.path-card ul{list-style:none;display:flex;flex-direction:column;gap:10px;flex:1;}
-.path-card li{font-size:13px;color:var(--gray);display:flex;gap:10px;}
-.path-card li::before{content:'✓';color:var(--green);flex-shrink:0;}
-.path-card li strong{color:var(--white);}
-.path-cta{
-  display:block;text-align:center;margin-top:28px;
-  padding:13px;border-radius:3px;font-size:13px;font-weight:700;
-  letter-spacing:0.5px;text-decoration:none;transition:all 0.2s;
-}
-.path-cta.gold{background:var(--gold);color:#07070f;}
-.path-cta.gold:hover{background:var(--gold2);}
-.path-cta.outline{border:1px solid var(--border);color:var(--white);}
-.path-cta.outline:hover{border-color:var(--gold);color:var(--gold);}
-
-/* ── MASTERCLASS ── */
-.week-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:48px;}
-.week-card{
-  background:var(--panel);border:1px solid var(--border);
-  border-radius:6px;padding:20px 16px;text-align:center;
-}
-.week-num{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:10px;}
-.week-title{font-size:13px;font-weight:700;color:var(--white);margin-bottom:8px;}
-.week-sub{font-size:12px;color:var(--muted);}
-.days{display:flex;gap:6px;justify-content:center;margin-top:12px;flex-wrap:wrap;}
-.day{
-  font-size:10px;font-weight:700;padding:3px 7px;border-radius:2px;
-  background:var(--panel2);color:var(--muted);border:1px solid var(--border);
-}
-
-.delivers-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:48px;}
-.deliver-item{
-  background:var(--panel);border:1px solid var(--border);
-  border-radius:6px;padding:24px;display:flex;gap:16px;align-items:flex-start;
-}
-.deliver-icon{font-size:24px;flex-shrink:0;}
-.deliver-text h4{font-size:14px;font-weight:700;margin-bottom:4px;}
-.deliver-text p{font-size:13px;color:var(--muted);}
-
-/* ── TELEGRAM CTA ── */
-.tg-section{
-  background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border);
-  text-align:center;padding:100px 24px;
-}
-.tg-section h2{font-size:clamp(28px,4vw,46px);font-weight:800;margin-bottom:16px;}
-.tg-section p{font-size:18px;color:var(--gray);max-width:540px;margin:0 auto 36px;}
-.tg-btn{
-  display:inline-flex;align-items:center;gap:12px;
-  background:var(--gold);color:#07070f;
-  font-size:15px;font-weight:700;letter-spacing:0.5px;
-  padding:16px 36px;border-radius:4px;text-decoration:none;
-  transition:background 0.2s,transform 0.15s;
-}
-.tg-btn:hover{background:var(--gold2);transform:translateY(-2px);}
-.tg-live{
-  display:inline-flex;align-items:center;gap:6px;
-  font-size:12px;color:var(--green);margin-top:16px;letter-spacing:1px;
-}
-.tg-live::before{content:'●';animation:blink 1.2s step-end infinite;}
-
-/* ── FAQ ── */
-.faq{display:flex;flex-direction:column;gap:16px;max-width:720px;margin:0 auto;}
-.faq-item{
-  background:var(--panel);border:1px solid var(--border);
-  border-radius:6px;overflow:hidden;
-}
-.faq-q{
-  width:100%;background:none;border:none;color:var(--white);
-  font-size:15px;font-weight:600;text-align:left;
-  padding:22px 28px;cursor:pointer;
-  display:flex;justify-content:space-between;align-items:center;gap:16px;
-}
+/* FAQ */
+.faq{display:flex;flex-direction:column;gap:12px;max-width:700px;margin:0 auto;}
+.faq-item{background:var(--panel);border:1px solid var(--bdr);border-radius:4px;overflow:hidden;}
+.faq-q{width:100%;background:none;border:none;color:var(--white);font-size:14px;font-weight:600;text-align:left;padding:20px 24px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:12px;transition:color .15s;}
 .faq-q:hover{color:var(--gold);}
-.faq-icon{color:var(--muted);font-size:20px;flex-shrink:0;transition:transform 0.2s;}
+.faq-icon{color:var(--muted);font-size:18px;flex-shrink:0;transition:transform .2s;}
 .faq-item.open .faq-icon{transform:rotate(45deg);color:var(--gold);}
-.faq-a{
-  display:none;padding:0 28px 22px;
-  font-size:14px;color:var(--gray);line-height:1.75;
-}
+.faq-a{display:none;padding:0 24px 20px;font-size:13px;color:var(--gray);line-height:1.75;}
 .faq-a strong{color:var(--white);}
 .faq-item.open .faq-a{display:block;}
 
-/* ── FOOTER ── */
-footer{
-  padding:48px 24px;border-top:1px solid var(--border);
-  text-align:center;
-}
-.footer-logo{font-size:13px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold);margin-bottom:8px;}
-.footer-disc{font-size:12px;color:var(--muted);max-width:560px;margin:0 auto;line-height:1.6;}
+/* FOOTER */
+footer{padding:40px 24px;border-top:1px solid var(--bdr);text-align:center;}
+.footer-logo{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:10px;}
+.footer-disc{font-size:11px;color:var(--muted);max-width:580px;margin:0 auto;line-height:1.65;}
 
-/* ── RESPONSIVE ── */
+/* RESPONSIVE */
 @media(max-width:768px){
-  .hero-inner{grid-template-columns:1fr;gap:48px;}
-  .story-grid{grid-template-columns:1fr;}
-  .agent-grid{grid-template-columns:1fr;}
-  .pockets{grid-template-columns:1fr;}
-  .systems-grid{grid-template-columns:repeat(2,1fr);}
-  .proof-grid{grid-template-columns:repeat(2,1fr);}
-  .for-grid{grid-template-columns:1fr;}
-  .paths{grid-template-columns:1fr;}
-  .week-grid{grid-template-columns:repeat(2,1fr);}
-  .delivers-grid{grid-template-columns:1fr;}
-  .chain-item{grid-template-columns:1fr;gap:8px;}
-  .jet-quote{padding:28px 24px;}
+  .hero-inner,.story-grid,.what-grid,.pockets,.paths{grid-template-columns:1fr;}
+  .cards-grid{grid-template-columns:1fr;}
+  .hero-inner{gap:40px;}
 }
 </style>
 </head>
 <body>
 
-<!-- ── NAV ── -->
+<!-- NAV -->
 <nav>
   <a class="nav-logo" href="#">Absolute <span>Dollar</span> Intelligence</a>
-  <a class="nav-cta" href="https://t.me/absolutetrademeister" target="_blank" rel="noopener">
-    Join on Telegram
-  </a>
+  <span class="nav-live">Live · London Session</span>
+  <a class="nav-cta" href="https://t.me/absolutetrademeister" target="_blank" rel="noopener">Join on Telegram</a>
 </nav>
 
-<!-- ── HERO ── -->
+<!-- HERO -->
 <section class="hero">
   <div class="hero-inner">
-    <div class="hero-copy">
-      <div class="hero-eyebrow">Absolute Dollar Intelligence · Nairobi</div>
-      <h1>You don't need better signals.<br><em>You need better intelligence.</em></h1>
-      <p class="hero-sub">
-        The Absolute Dollar Agent is a precision intraday decision support system built by a Nairobi trader over 4 years of live markets.<br><br>
-        <strong>The code is not the product. The intelligence is.</strong>
+    <div>
+      <div class="hero-stamp">Nairobi · XAUUSD · Week 27 · 09:43 EAT</div>
+      <h1>
+        <span class="break">Analysis done.</span>
+        <span class="break">Capital allocated.</span>
+        <span class="break accent">London opens in 17 minutes.</span>
+      </h1>
+      <p class="hero-body">
+        Three positions running. The agent is managing a macro short from June 17 that is up <strong>+1,976 pts</strong>. A counter-trend long on H1. An M15 short from last night. Score: <strong class="red">-11/15</strong>.
       </p>
-      <div class="hero-actions">
-        <a class="btn-primary" href="https://t.me/absolutetrademeister" target="_blank" rel="noopener">
-          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12L8.32 13.617l-2.96-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.828.942z"/></svg>
-          Watch the Agent Live
+      <p class="hero-body">
+        I do not need to predict the market this morning. <strong>The agent already read it.</strong> I just need to execute.
+      </p>
+      <div class="hero-quote">
+        <strong>"We are not traders anymore. We are operators."</strong><br>
+        The agent fires. You inspect. You pull the trigger. That is the formula.
+      </div>
+      <div class="hero-cta-wrap">
+        <a class="btn-main" href="https://t.me/absolutetrademeister" target="_blank" rel="noopener">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12L8.32 13.617l-2.96-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.828.942z"/></svg>
+          Watch the Stream — t.me/absolutetrademeister
         </a>
-        <span class="hero-note">t.me/absolutetrademeister · London &amp; NY sessions · 10:00–18:00 EAT</span>
+        <span class="hero-sub-note">London opens 10:00 EAT · NY opens 15:00 EAT · Same agent. Live.</span>
       </div>
     </div>
 
+    <!-- LIVE TERMINAL -->
     <div class="terminal">
-      <div class="terminal-bar">
-        <div class="t-dot r"></div><div class="t-dot y"></div><div class="t-dot g"></div>
-        <span class="terminal-title">ABSOLUTE DOLLAR AGENT · XAUUSD · M5</span>
+      <div class="tbar">
+        <div class="td r"></div><div class="td y"></div><div class="td g"></div>
+        <span class="ttitle">ABSOLUTE DOLLAR AGENT · XAUUSD · 09:43 EAT</span>
       </div>
-      <div class="terminal-body">
-        <span class="t-line"><span class="t-dim">━━━━━━━━━━━━━━━━━━━━━━━━</span></span>
-        <span class="t-line"><span class="t-gold">🔷 FRACTAL 4-LAYER SYNC</span></span>
-        <span class="t-line"><span class="t-dim"> ├─ L1 Sovereign (D)  </span><span class="t-green">🟢 BULL</span></span>
-        <span class="t-line"><span class="t-dim"> ├─ L2 Anchor   (H1) </span><span class="t-green">🟢 BULL</span></span>
-        <span class="t-line"><span class="t-dim"> ├─ L3 Filter   (M15)</span><span class="t-green">🟢 BULL</span></span>
-        <span class="t-line"><span class="t-dim"> └─ L4 Exec     (M5) </span><span class="t-green">🟢 BULL</span></span>
-        <span class="t-sep">────────────────────────</span>
-        <span class="t-line"><span class="t-gold">🔥 FULLY ALIGNED BULLISH</span></span>
-        <span class="t-line"><span class="t-dim">Score: </span><span class="t-green">+11.0</span><span class="t-dim">/15 · ATR: </span><span class="t-green">High</span></span>
-        <span class="t-sep">────────────────────────</span>
-        <span class="t-line"><span class="t-gold">🔶 SIGNAL FIRED</span></span>
-        <span class="t-line"><span class="t-dim">Type: </span><span class="t-white">◆ SYNC BUY</span></span>
-        <span class="t-line"><span class="t-dim">Entry:  </span><span class="t-white">3,342.50</span></span>
-        <span class="t-line"><span class="t-dim">SL:     </span><span class="t-red">3,330.00</span><span class="t-dim"> (12.5 pts)</span></span>
-        <span class="t-line"><span class="t-dim">TP1:    </span><span class="t-green">3,355.00</span><span class="t-dim"> (12.5 pts · 1:1)</span></span>
-        <span class="t-line"><span class="t-dim">TP2:    </span><span class="t-green">3,360.75</span><span class="t-dim"> (1.5:1)</span></span>
-        <span class="t-line"><span class="t-dim">TP3:    </span><span class="t-green">3,367.50</span><span class="t-dim"> (2:1)</span></span>
-        <span class="t-sep">────────────────────────</span>
-        <span class="t-line"><span class="t-dim">💡 Risk $20 → </span><span class="t-white">0.016 lots</span></span>
-        <span class="t-line"><span class="t-gold">○ GATE: EXECUTE</span> <span class="blink t-gold">▌</span></span>
+      <div class="tbody">
+        <span class="tl t-dim">━━━━━━━━━━━━━━━━━━━━━━━━━</span>
+        <span class="tl"><span class="t-gold">🔷 FRACTAL SYNC</span>  <span class="t-dim">Score: </span><span class="t-red">-11/15</span></span>
+        <span class="tl"><span class="t-dim"> ├─ L1 Sovereign (H4) </span><span class="t-red">🔴 BEAR</span><span class="t-dim"> · Macro Veto</span></span>
+        <span class="tl"><span class="t-dim"> ├─ L2 Anchor   (H1)  </span><span class="t-green">🟢 BULL</span><span class="t-dim"> · Pullback</span></span>
+        <span class="tl"><span class="t-dim"> ├─ L3 Filter   (M15) </span><span class="t-red">🔴 BEAR</span><span class="t-dim"> · Tactical</span></span>
+        <span class="tl"><span class="t-dim"> └─ L4 Exec     (M5)  </span><span class="t-red">🔴 BEAR</span></span>
+        <span class="tl t-dim">──────────────────────────</span>
+        <span class="tl"><span class="t-red">🔴 BEARISH BIAS (Strong)</span></span>
+        <span class="tl"><span class="t-dim">⚡ L2 PULLBACK — Await Anchor Bear Flip</span></span>
+        <span class="tl t-dim">──────────────────────────</span>
+        <span class="tl t-gold">📋 3 ACTIVE POSITIONS</span>
+        <div class="pos-block">
+          <span class="tl pos-id">ATM-20260617-1400-SELL-01</span>
+          <div class="pos-row">
+            <span class="t-w">SHORT · H4 Runner</span>
+            <span class="pos-pnl-pos">+1,976 pts</span>
+          </div>
+          <span class="pos-status">🟢 TP2 HIT → TRAIL ACTIVE</span>
+        </div>
+        <div class="pos-block">
+          <span class="tl pos-id">ATM-20260625-1100-BUY-01</span>
+          <div class="pos-row">
+            <span class="t-w">CT-L · H1 Pullback</span>
+            <span class="pos-pnl-pos">+185 pts</span>
+          </div>
+          <span class="pos-status">🟡 ENTRY ACTIVE · Peak +550</span>
+        </div>
+        <div class="pos-block">
+          <span class="tl pos-id">ATM-20260628-1815-SELL-01</span>
+          <div class="pos-row">
+            <span class="t-w">SHORT · M15 Intraday</span>
+            <span class="pos-pnl-neg">-31 pts</span>
+          </div>
+          <span class="pos-status">🟡 ENTRY ACTIVE · Awaiting sweep</span>
+        </div>
+        <span class="tl t-dim">──────────────────────────</span>
+        <span class="tl"><span class="t-dim">💡 Agent Advice: </span><span class="t-w">Aggressive short.</span></span>
+        <span class="tl"><span class="t-dim">   4-layer sovereign aligned.</span></span>
+        <span class="tl"><span class="t-dim">   Await London sweep. Asian liq target.</span></span>
+        <span class="tl t-dim">──────────────────────────</span>
+        <span class="tl"><span class="t-gold">⏱ LONDON: </span><span class="t-w">10:00 EAT</span><span class="t-dim"> · </span><span class="t-green">● STREAM STARTING</span><span class="blink t-gold"> ▌</span></span>
       </div>
     </div>
   </div>
 </section>
 
-<hr class="rule">
+<!-- ANALYSIS CARDS -->
+<section class="tight" style="background:var(--bg2);border-top:1px solid var(--bdr);">
+  <div class="container">
+    <div class="sec-head">
+      <div class="tag">Week 27 · Monday June 29 · Pre-London</div>
+      <h2>This is the morning card.<br>Posted before every session.</h2>
+      <p>Top-down. H4 to M5. Every layer of the market read before a single trade fires. This is what the operator posts to the group. This is what you learn to build.</p>
+    </div>
 
-<!-- ── STORY ── -->
+    <div class="cards-grid">
+      <!-- H4 -->
+      <div class="analysis-card">
+        <div class="ac-head">
+          <span class="ac-tf">H4 — L1 Sovereign</span>
+          <span class="ac-role sovereign">Macro Veto</span>
+        </div>
+        <div class="ac-body">
+          <div class="ac-row"><span class="ac-label t-dim">Regime</span><span class="ac-val bear">📉 Short — dominant bearish. No long bias here.</span></div>
+          <div class="ac-row"><span class="ac-label t-dim">V.WAP</span><span class="ac-val bear">📉 Bear — swing is active and confirmed</span></div>
+          <div class="ac-row"><span class="ac-label t-dim">Fib Trend</span><span class="ac-val bear">📉 Bear — bearish Fibonacci trend active</span></div>
+          <div class="ac-row"><span class="ac-label t-dim">Structure</span><span class="ac-val bear">📉 BOS↓ — last structural break is bearish</span></div>
+          <div class="ac-row"><span class="ac-label t-dim">RSI</span><span class="ac-val bear">📉 [48] Mid — watching for bull momentum confirm</span></div>
+          <hr class="ac-sep">
+          <span class="ac-liq-label">Liquidity</span>
+          <div class="ac-row"><span class="ac-label t-dim">Buy-side</span><span class="ac-val t-w">4,382.15 (near Equilibrium / PWH)</span></div>
+          <div class="ac-row"><span class="ac-label t-dim">Sell-side</span><span class="ac-val t-w">3,959.14 (current Weak Low)</span></div>
+          <div class="ac-row"><span class="ac-label t-dim">Context</span><span class="ac-val neut">⚪ Neutral</span></div>
+          <span class="ac-bias bear">→ BIAS: 🔴 BEAR</span>
+        </div>
+      </div>
+
+      <!-- H1 -->
+      <div class="analysis-card">
+        <div class="ac-head">
+          <span class="ac-tf">H1 — L2 Anchor</span>
+          <span class="ac-role anchor">Target ⚡</span>
+        </div>
+        <div class="ac-body">
+          <div class="ac-row"><span class="ac-label t-dim">Regime</span><span class="ac-val bull">🔼 Long — regime flipped bullish. Interesting.</span></div>
+          <div class="ac-row"><span class="ac-label t-dim">V.WAP</span><span class="ac-val bull">📈 Bull — swing confirmed bullish</span></div>
+          <div class="ac-row"><span class="ac-label t-dim">Fib Trend</span><span class="ac-val bull">📈 Bull — Fibonacci trend bullish confirmed</span></div>
+          <div class="ac-row"><span class="ac-label t-dim">Structure</span><span class="ac-val bull">📈 BOS↑ — CHoCH confirmed then BOS up. Pullback in progress. Agent waiting for Bear Flip to resume macro.</span></div>
+          <div class="ac-row"><span class="ac-label t-dim">RSI</span><span class="ac-val neut">📊 [50] Mid — dead zone 48–52. Ranging.</span></div>
+          <hr class="ac-sep">
+          <span class="ac-liq-label">Liquidity</span>
+          <div class="ac-row"><span class="ac-label t-dim">Buy-side</span><span class="ac-val t-w">4,220.98 (prev weekly high, above EQ)</span></div>
+          <div class="ac-row"><span class="ac-label t-dim">Sell-side</span><span class="ac-val t-w">3,959.14 (current Weak Low)</span></div>
+          <div class="ac-row"><span class="ac-label t-dim">Context</span><span class="ac-val neut">⚪ Neutral</span></div>
+          <span class="ac-bias bull">→ BIAS: 🟢 BULL (counter-trend pullback)</span>
+        </div>
+      </div>
+
+      <!-- M15 -->
+      <div class="analysis-card">
+        <div class="ac-head">
+          <span class="ac-tf">M15 — L3 Filter</span>
+          <span class="ac-role filter">Navigator</span>
+        </div>
+        <div class="ac-body">
+          <div class="ac-row"><span class="ac-label t-dim">Regime</span><span class="ac-val bear">🔽 Short — tactical bearish confirmed</span></div>
+          <div class="ac-row"><span class="ac-label t-dim">V.WAP</span><span class="ac-val bear">📉 Bear — swing active and confirmed</span></div>
+          <div class="ac-row"><span class="ac-label t-dim">Fib Trend</span><span class="ac-val bear">📉 Bear — Fibonacci trend bearish confirmed</span></div>
+          <div class="ac-row"><span class="ac-label t-dim">Structure</span><span class="ac-val bear">📉 BOS↓ — aligns with H4. Pre-London: trading above EQ. Weak High at Premium. Strong Low at Discount.</span></div>
+          <div class="ac-row"><span class="ac-label t-dim">RSI</span><span class="ac-val bear">📉 [36] Bear — bearish momentum causing BOS</span></div>
+          <hr class="ac-sep">
+          <span class="ac-liq-label">Liquidity</span>
+          <div class="ac-row"><span class="ac-label t-dim">Buy-side</span><span class="ac-val t-w">4,086.23 (above VAH, supply cluster)</span></div>
+          <div class="ac-row"><span class="ac-label t-dim">Sell-side</span><span class="ac-val t-w">4,048.17 — price purging this now</span></div>
+          <div class="ac-row"><span class="ac-label t-dim">Context</span><span class="ac-val bear">💧 BREAKING SWING LOW</span></div>
+          <span class="ac-bias bear">→ BIAS: 🔴 BEAR</span>
+        </div>
+      </div>
+
+      <!-- M5 Execution -->
+      <div class="analysis-card">
+        <div class="ac-head">
+          <span class="ac-tf">M5/M1 — L4 Execution</span>
+          <span class="ac-role exec">Gate ○</span>
+        </div>
+        <div class="ac-body">
+          <div class="ac-row"><span class="ac-label t-dim">Plan</span><span class="ac-val t-w">Scalping shorts on M5. Waiting for Asian liquidity sweep at London open.</span></div>
+          <div class="ac-row"><span class="ac-label t-dim">Targets</span><span class="ac-val bear">4,033 · 4,021 · 4,010</span></div>
+          <div class="ac-row"><span class="ac-label t-dim">Watching</span><span class="ac-val neut">H1 CT-L peak. Once 4,086–4,096 supply hit, CT-L closes. Bearish thesis resumes.</span></div>
+          <div class="ac-row"><span class="ac-label t-dim">Risk</span><span class="ac-val t-w">Price action may range before London. Wait for sweep confirmation.</span></div>
+          <hr class="ac-sep">
+          <div class="ac-row"><span class="ac-label t-dim">PDH</span><span class="ac-val t-w">4,096.04</span></div>
+          <div class="ac-row"><span class="ac-label t-dim">PDL</span><span class="ac-val t-w">3,982.89</span></div>
+          <div class="ac-row"><span class="ac-label t-dim">Daily</span><span class="ac-val neut">↔ Inside Range</span></div>
+          <span class="ac-bias wait">→ TRIGGER: ⊗ AWAIT LONDON OPEN</span>
+        </div>
+      </div>
+    </div>
+
+    <p style="font-size:13px;color:var(--muted);text-align:center;margin-top:20px;">
+      This is a real analysis card from Week 27, June 29, 2026 · XAUUSD · Pepperstone · Not financial advice.
+    </p>
+  </div>
+</section>
+
+<!-- STORY -->
 <section>
   <div class="container">
     <div class="story-grid">
       <div class="story-text">
-        <div class="tag">The Builder</div>
-        <h2>4 years in the markets.<br>9 months in the code.</h2>
+        <div class="tag">Emmanuel · Nairobi</div>
+        <h2 style="font-size:clamp(26px,3.5vw,38px);font-weight:800;line-height:1.2;margin-bottom:24px;">4 years in the markets.<br>9 months in the code.<br>25 days without a salary.</h2>
         <p>
-          My name is Emmanuel. I trade intraday momentum from Nairobi. I am not a guru.
-          I did not find a secret strategy online. I sat in the markets for four years, losing,
-          adjusting, studying — until I stopped trying to predict price and started trying to
-          <strong>read it with precision.</strong>
+          I am not a guru. I did not wake up one day and start printing money. I spent four years getting destroyed by signals, by predictions, by other people's calls — until I stopped asking "where is price going" and started asking <strong>"what is price actually doing."</strong>
         </p>
         <p>
-          The question I kept asking was simple: <strong>what confluence gives me the
-          confidence to deploy risk-managed capital?</strong> Not profits. Not wins.
-          Confluence. That question became the agent.
+          That question took 9 months to answer in code. Over 3,000 lines of Pine Script. 17 subsystems. Built while clocking in 8–5 in logistics, refining the agent after hours, weekends, whenever I had a screen in front of me.
+        </p>
+        <p class="raw">
+          "The moment you lose consistency — you lose momentum — you lose on opportunities. Week 16 to Week 23 I was very confident because I was focused. From June 1st it's been very tough adjusting to life without a job, no income, no social confidence, nothing. Just myself, my agent and the financial markets."
         </p>
         <p>
-          For 9 months, while holding down a full-time job in logistics, I codified my
-          entire approach into Pine Script. Every rule, every filter, every layer of
-          confirmation. Over 3,000 lines. 17 subsystems. A complete glass-box intelligence
-          that lives on your chart.
-        </p>
-        <p class="highlight">
-          "If I gave you a jet, you would crash it. What I am giving you is not the jet —
-          it is the intelligence to fly it."
+          In May I left my job. It was untimely. The terms were not settled. I just left and went full-time stress-testing the agent. In June, running it on demo, <strong>it did 10% automatically.</strong> Then the markets tested my confidence. But the agent kept doing the heavy lifting.
         </p>
         <p>
-          In May I left my job. I stress-tested the agent full-time. In June, running it
-          on a demo account, <strong>it executed 10% automatically.</strong> Week 16 to
-          Week 23 I was consistent, focused, and profitable. The rules of engagement work.
-          And I believe I have built something.
-        </p>
-        <p>
-          Now the decision is to make it available. Not as a signal service. Not as a bot.
-          As an <strong>operator framework</strong> — with the agent as your primary intelligence tool.
+          No emotion. No bias. No fear. Pure market executions. <strong>The rules of engagement work.</strong> And I believe I have built something.
         </p>
       </div>
-
-      <div class="timeline">
-        <div class="tag">Timeline</div>
-        <div class="tl-item">
-          <div class="tl-dot">📉</div>
-          <div class="tl-content">
-            <div class="tl-label">2021 – 2024</div>
-            <div class="tl-text"><strong>4 years of live markets.</strong> Signals. Gurus. Losses. Tuition. Learning to read price, not predict it.</div>
+      <div>
+        <div class="tag" style="margin-bottom:24px;">Timeline</div>
+        <div class="tl">
+          <div class="tl-item">
+            <div class="tl-dot">📉</div>
+            <div>
+              <div class="tl-yr">2021–2024</div>
+              <div class="tl-copy"><strong>4 years in the markets.</strong> Signals. Gurus. Losses. Tuition. Learning to read price, not predict it.</div>
+            </div>
           </div>
-        </div>
-        <div class="tl-item">
-          <div class="tl-dot">💻</div>
-          <div class="tl-content">
-            <div class="tl-label">Sept 2024 – April 2025</div>
-            <div class="tl-text"><strong>9 months of codification.</strong> Built ADSA v6 while employed. Logic and approach — not performance — was the goal.</div>
+          <div class="tl-item">
+            <div class="tl-dot">💻</div>
+            <div>
+              <div class="tl-yr">Sep 2024 – Apr 2025</div>
+              <div class="tl-copy"><strong>9 months building ADSA.</strong> Working a day job, building the agent after hours. v6 proved the logic. v7 proved it could execute.</div>
+            </div>
           </div>
-        </div>
-        <div class="tl-item">
-          <div class="tl-dot active">🤝</div>
-          <div class="tl-content">
-            <div class="tl-label">April – May 2025</div>
-            <div class="tl-text"><strong>ADSA v7 deployed.</strong> Platinum Risk Model. Forex, crypto, futures routing. MT5 handshake tested. The agent executed.</div>
+          <div class="tl-item">
+            <div class="tl-dot on">🤝</div>
+            <div>
+              <div class="tl-yr">May 2025</div>
+              <div class="tl-copy"><strong>Left the job.</strong> Full-time stress test. MT5 handshake. Telegram alerts live. The agent executed on real markets.</div>
+            </div>
           </div>
-        </div>
-        <div class="tl-item">
-          <div class="tl-dot active">🚀</div>
-          <div class="tl-content">
-            <div class="tl-label">June 2025</div>
-            <div class="tl-text"><strong>Left the job. Full-time.</strong> Demo: +10% automated. Weeks 16–23 consistent. The agent does the heavy lifting.</div>
+          <div class="tl-item">
+            <div class="tl-dot on">📊</div>
+            <div>
+              <div class="tl-yr">June 2025</div>
+              <div class="tl-copy"><strong>Demo: +10% automated.</strong> Weeks 16–23 consistent. PF 6.32. +1,448 pts. 12W/3L. The benchmark is set.</div>
+            </div>
           </div>
-        </div>
-        <div class="tl-item">
-          <div class="tl-dot active">🎯</div>
-          <div class="tl-content">
-            <div class="tl-label">Now</div>
-            <div class="tl-text"><strong>Building the operator community.</strong> Live on Telegram. Training precision intraday operators — one at a time.</div>
+          <div class="tl-item">
+            <div class="tl-dot on">🚀</div>
+            <div>
+              <div class="tl-yr">Now · Week 27</div>
+              <div class="tl-copy"><strong>Building the operator community.</strong> Live on Telegram. Three positions running this morning. London opens in 17 minutes.</div>
+            </div>
           </div>
         </div>
       </div>
@@ -594,533 +491,246 @@ footer{
   </div>
 </section>
 
-<hr class="rule">
-
-<!-- ── JET QUOTE ── -->
-<div class="container">
-  <div class="jet-quote">
-    <blockquote>"The code is not the product.<br><em>The intelligence is the product.</em>"</blockquote>
-    <cite>— Emmanuel · Founder, Absolute Dollar Intelligence · Nairobi</cite>
-  </div>
+<!-- BIG QUOTE -->
+<div class="big-quote">
+  <blockquote>"If I gave you a jet,<br><em>you would crash it.</em>"</blockquote>
+  <p style="font-size:15px;color:var(--gray);max-width:560px;margin:0 auto 10px;">The code is not the product. The intelligence is. Anyone can have the Pine Script. Without the framework — the top-down read, the pocket card, the risk model, the discipline — they will blow the account and blame the tool.</p>
+  <cite>— Emmanuel · Founder, Absolute Dollar Intelligence</cite>
 </div>
 
-<!-- ── WHAT IS THE AGENT ── -->
+<!-- WHAT IT IS -->
 <section class="tight">
   <div class="container">
-    <div class="section-header">
-      <div class="tag">The Absolute Dollar Agent</div>
-      <h2>What it is.<br>What it is not.</h2>
-      <p>Get this wrong and you will blow your account and blame the tool. Understand it and it becomes the most precise instrument you have ever put on a chart.</p>
+    <div class="sec-head center">
+      <div class="tag">The Agent</div>
+      <h2>What it is. What it is not.</h2>
+      <p>Get this wrong and you will blow the account. Understand it and it becomes the most precise instrument you have ever put on a chart.</p>
     </div>
-
-    <div class="agent-grid">
-      <div class="agent-card no">
-        <h3>✗ What it is NOT</h3>
+    <div class="what-grid">
+      <div class="what-card no">
+        <h3>✗ Not this</h3>
         <ul>
-          <li><strong>Not a signal service.</strong> It does not tell you to blindly buy or sell. You make the decision.</li>
-          <li><strong>Not a bot.</strong> It does not execute trades automatically. You are the operator.</li>
-          <li><strong>Not an LLM.</strong> No machine learning. No hallucinations. Deterministic rule-based logic only.</li>
-          <li><strong>Not a black box.</strong> Every signal comes with the full reasoning chain — score, sync, gate, advice.</li>
-          <li><strong>Not for impatient people.</strong> The masterclass is 5 days, repeatable for 3–4 weeks. Discipline is the edge.</li>
+          <li><strong>Not a signal service.</strong> No one to follow blindly. You are the operator. You make the call.</li>
+          <li><strong>Not a bot.</strong> It does not open positions automatically. Every trade is your decision.</li>
+          <li><strong>Not a black box.</strong> Every signal comes with a score, a sync phase, a gate verdict, and agent advice. You see everything.</li>
+          <li><strong>Not for people who want to skip the framework.</strong> The masterclass is 5 days. It is not optional.</li>
+          <li><strong>Not a prediction machine.</strong> It reads what price is doing — not where it is going.</li>
         </ul>
       </div>
-      <div class="agent-card yes">
-        <h3>✓ What it IS</h3>
+      <div class="what-card yes">
+        <h3>✓ This</h3>
         <ul>
-          <li><strong>A glass-box AI decision support system.</strong> It shows you exactly why it fired and whether the gate passed.</li>
-          <li><strong>A 5-timeframe scoring engine.</strong> D + H4 + H1 + M15 + M5. Score range ±15. No guesswork.</li>
-          <li><strong>A risk model engine.</strong> Calculates exact position size from your dollar risk. Every time.</li>
-          <li><strong>A structure and liquidity reader.</strong> BOS, CHoCH, BSL/SSL sweeps, PDH/PDL context — live on your chart.</li>
-          <li><strong>Your primary intelligence tool.</strong> You are not a trader anymore. You are an operator.</li>
+          <li><strong>A glass-box intelligence.</strong> Full reasoning chain on every signal. Score. Sync. Gate. Advice. All visible.</li>
+          <li><strong>A 5-timeframe scoring engine.</strong> D + H4 + H1 + M15 + M5. Score range ±15. Composite directional bias computed live.</li>
+          <li><strong>A risk model engine.</strong> Dollar risk → exact position size. Every asset. Every session. No manual calculation.</li>
+          <li><strong>A structure and liquidity reader.</strong> BOS, CHoCH, BSL/SSL sweeps, PDH/PDL, volume profile — live on your chart.</li>
+          <li><strong>Your primary analysis tool.</strong> You bring the capital and the discipline. The agent brings the intelligence.</li>
         </ul>
       </div>
-    </div>
-
-    <div class="section-header" style="margin-top:64px;margin-bottom:24px;">
-      <h2 style="font-size:24px;">17 Subsystems. One Dashboard.</h2>
-      <p>Everything the agent tracks, scored, narrated, and displayed in real time.</p>
-    </div>
-    <div class="systems-grid">
-      <div class="sys-item"><span>01</span>Fractal 4-Layer State Machine (L1–L4)</div>
-      <div class="sys-item"><span>02</span>5-Timeframe Composite Scoring Engine (±15)</div>
-      <div class="sys-item"><span>03</span>Adaptive Swing-Anchored V.WAP Engine</div>
-      <div class="sys-item"><span>04</span>Regime Filter (Momentum + VWAP aligned)</div>
-      <div class="sys-item"><span>05</span>Fib Trend Scoring (per timeframe)</div>
-      <div class="sys-item"><span>06</span>ATR Context Engine (High / Med / Low)</div>
-      <div class="sys-item"><span>07</span>SMC Engine (BOS · CHoCH · OB · FVG)</div>
-      <div class="sys-item"><span>08</span>Liquidity Swing Engine (BSL · SSL)</div>
-      <div class="sys-item"><span>09</span>Volume Profile (VAH · VAL · POC)</div>
-      <div class="sys-item"><span>10</span>PDH/PDL Daily Context Engine</div>
-      <div class="sys-item"><span>11</span>Platinum Risk Model (asset-routed)</div>
-      <div class="sys-item"><span>12</span>6-Check Confluence Gate</div>
-      <div class="sys-item"><span>13</span>Glass Box AI Narrative (tree format)</div>
-      <div class="sys-item"><span>14</span>Trade Progression Engine (TP1→Holder Mode)</div>
-      <div class="sys-item"><span>15</span>SL Autopsy Engine (contextual diagnosis)</div>
-      <div class="sys-item"><span>16</span>Dual Telegram Broadcast (War Room + Public)</div>
-      <div class="sys-item"><span>17</span>Performance Table (PF · W/L · Net pts)</div>
     </div>
   </div>
 </section>
 
-<hr class="rule">
-
-<!-- ── PERFORMANCE ── -->
-<section class="tight">
+<!-- FORMULA -->
+<section class="formula-section tight">
   <div class="container">
-    <div class="section-header">
-      <div class="tag">Benchmark · Not a Guarantee</div>
-      <h2>What the agent produced<br>under live operator conditions.</h2>
-      <p>This is a benchmark from a controlled test period — not a promise of future results. Markets change. Discipline does not.</p>
-    </div>
-    <div class="proof-grid">
-      <div class="proof-card">
-        <div class="proof-num gold">6.32</div>
-        <div class="proof-label">Profit Factor · ELITE tier</div>
-      </div>
-      <div class="proof-card">
-        <div class="proof-num green">+1,448</div>
-        <div class="proof-label">Net Points</div>
-      </div>
-      <div class="proof-card">
-        <div class="proof-num">12W / 3L</div>
-        <div class="proof-label">Win / Loss Record</div>
-      </div>
-      <div class="proof-card">
-        <div class="proof-num green">+10%</div>
-        <div class="proof-label">Demo Return · June 2025</div>
-      </div>
-    </div>
-    <div class="proof-note">
-      <strong>Transparency:</strong> These figures come from a specific period (Weeks 16–23, 2025) under consistent operator conditions. A loss is a lesson. The SL Autopsy Engine diagnoses every stop hit. Results require discipline, capital management, and adherence to the framework — not just the tool.
-    </div>
-  </div>
-</section>
-
-<hr class="rule">
-
-<!-- ── FORMULA ── -->
-<section class="formula-section">
-  <div class="container">
-    <div class="section-header">
+    <div class="sec-head center">
       <div class="tag">The Operator Formula</div>
-      <h2>Three pockets. One outcome.</h2>
-      <p>Every trade passes through all three. Miss one and the system breaks.</p>
+      <h2>Three pockets. Every trade.</h2>
+      <p>This morning at 09:43. Analysis is filled. Capital is allocated. Execution waits for London. That is the formula applied in real time.</p>
     </div>
 
-    <div class="formula-display">
-      <span class="var">Analysis</span>
-      <span class="op">+</span>
-      <span class="var">Capital</span>
-      <span class="op">+</span>
-      <span class="var">Execution</span>
-      <span class="op">=</span>
-      <span class="result">🚀 Success</span>
+    <div class="formula-big">
+      <span class="fv">Analysis</span>
+      <span class="fo">+</span>
+      <span class="fv">Capital</span>
+      <span class="fo">+</span>
+      <span class="fv">Execution</span>
+      <span class="fo">=</span>
+      <span class="fr">🚀 Success</span>
+    </div>
+
+    <div class="formula-applied">
+      <span class="t-gold t-dim">── THIS MORNING · XAUUSD · WEEK 27 ─────────────</span><br>
+      <span class="t-dim">Pocket 1 · Analysis  </span><span class="t-green">✅ FILLED</span><span class="t-dim"> — H4 Bear veto · H1 pullback · M15 bearish · Score -11/15</span><br>
+      <span class="t-dim">Pocket 2 · Capital   </span><span class="t-green">✅ READY</span><span class="t-dim"> — Risk allocated · 3 positions sized · Platinum Risk Model applied</span><br>
+      <span class="t-dim">Pocket 3 · Execution </span><span class="t-gold">⏱ AWAIT</span><span class="t-dim"> — London 10:00 EAT · Asian liq sweep · M5 stream starting</span>
     </div>
 
     <div class="pockets">
       <div class="pocket">
-        <div class="pocket-num">1</div>
+        <div class="p-num">1</div>
         <h3 class="gold">Analysis</h3>
-        <p><strong>The agent does this.</strong> Top-down read from Daily to M5. Score, sync, narrative, liquidity, structure — all computed and displayed in real time on your chart.</p>
+        <p><strong>The agent does this.</strong> Top-down from H4 to M5. Score, sync phase, narrative, liquidity, structure — live on your chart every session. The morning card is built from this output.</p>
       </div>
       <div class="pocket">
-        <div class="pocket-num">2</div>
+        <div class="p-num">2</div>
         <h3 class="gold">Capital</h3>
-        <p><strong>You control this.</strong> Your account. Your risk per trade. The agent's Platinum Risk Model routes your dollar risk to the exact position size — no manual calculation needed.</p>
+        <p><strong>You control this.</strong> Your account. Your risk per trade. The Platinum Risk Model routes your dollar risk to the exact position size. You never guess a lot size again.</p>
       </div>
       <div class="pocket">
-        <div class="pocket-num">3</div>
+        <div class="p-num">3</div>
         <h3 class="gold">Execution</h3>
-        <p><strong>You pull the trigger.</strong> The agent shows you the signal, the gate verdict, and the advice. You inspect, confirm the confluence, and execute on your own account.</p>
+        <p><strong>You pull the trigger.</strong> The agent shows the signal, the gate verdict, the advice. You inspect, confirm confluence, and execute on your own account. No one does this for you.</p>
       </div>
     </div>
   </div>
 </section>
 
-<hr class="rule">
-
-<!-- ── 4-LAYER CHAIN ── -->
-<section>
+<!-- SCORE TABLE -->
+<section class="tight">
   <div class="container">
-    <div class="section-header">
-      <div class="tag">Fractal 4-Layer Chain</div>
-      <h2>Top-down. Every time.<br>No exceptions.</h2>
-      <p>The agent reads four timeframe layers simultaneously. A SYNC signal only fires when all four align. That is the edge.</p>
+    <div class="sec-head">
+      <div class="tag">Scoring Engine · ±15</div>
+      <h2>The score tells you<br>what the market is doing.<br>Not what to do.</h2>
+      <p>Five timeframes. Three signals each — Regime, V.WAP, Fib Trend. Combined score from -15 to +15. This morning: <span class="red" style="font-weight:700;">-11/15</span>. That is not ambiguous.</p>
     </div>
-
-    <div class="chain">
-      <div class="chain-item">
-        <div>
-          <div class="chain-layer">L1</div>
-          <div class="chain-tf">Daily</div>
-        </div>
-        <div class="chain-desc">
-          <strong>Sovereign Layer</strong>
-          Regime · V.WAP · Fib Trend · RSI — the weekly bias anchor. If Daily is bearish, every buy is swimming against the current.
-        </div>
-        <div class="chain-role">SOVEREIGN</div>
-      </div>
-      <div class="chain-item">
-        <div>
-          <div class="chain-layer">L2</div>
-          <div class="chain-tf">H1</div>
-        </div>
-        <div class="chain-desc">
-          <strong>Anchor Layer</strong>
-          The swing leg. Where the trade is being built. V.WAP direction here confirms or invalidates the sovereign bias.
-        </div>
-        <div class="chain-role">ANCHOR</div>
-      </div>
-      <div class="chain-item">
-        <div>
-          <div class="chain-layer">L3</div>
-          <div class="chain-tf">M15</div>
-        </div>
-        <div class="chain-desc">
-          <strong>Filter Layer</strong>
-          Tactical pullback or continuation. BSL/SSL sweep context. VAH/VAL/POC from the session volume profile. The navigator.
-        </div>
-        <div class="chain-role">FILTER</div>
-      </div>
-      <div class="chain-item">
-        <div>
-          <div class="chain-layer">L4</div>
-          <div class="chain-tf">M5</div>
-        </div>
-        <div class="chain-desc">
-          <strong>Execution Layer</strong>
-          Signal fires here. ATM cross, FVG fill, OB test, liquidity sweep. The gate either passes or it does not.
-        </div>
-        <div class="chain-role">EXEC GATE</div>
-      </div>
-    </div>
-
     <table class="score-table">
       <thead>
-        <tr>
-          <th>Score</th>
-          <th>State</th>
-          <th>Operator Action</th>
-        </tr>
+        <tr><th>Score</th><th>State</th><th>Operator Action</th></tr>
       </thead>
       <tbody>
-        <tr>
-          <td>≥ +10 + ATR High</td>
-          <td>🔥 Sovereign Momentum — Fully Aligned Bullish</td>
-          <td>Full protocol. TP1 → TP2 → TP3 → Holder Mode.</td>
-        </tr>
-        <tr>
-          <td>+6 to +9</td>
-          <td>🟢 Confident Bullish Bias</td>
-          <td>Execute. Standard TP protocol.</td>
-        </tr>
-        <tr>
-          <td>+4 to +5</td>
-          <td>🟡 Minimum Edge — Marginal Bull</td>
-          <td>Execute cautiously. TP1 only. Protect capital.</td>
-        </tr>
-        <tr>
-          <td>-3 to +3</td>
-          <td>⚪ Neutral — No Directional Edge</td>
-          <td>Stand aside. No trade. Wait for alignment.</td>
-        </tr>
-        <tr>
-          <td>-4 to -5</td>
-          <td>🟠 Minimum Edge — Marginal Bear</td>
-          <td>Execute cautiously. TP1 only. Protect capital.</td>
-        </tr>
-        <tr>
-          <td>-6 to -9</td>
-          <td>🔴 Confident Bearish Bias</td>
-          <td>Execute. Standard TP protocol.</td>
-        </tr>
-        <tr>
-          <td>≤ -10 + ATR High</td>
-          <td>🔥 Sovereign Momentum — Fully Aligned Bearish</td>
-          <td>Full protocol. TP1 → TP2 → TP3 → Holder Mode.</td>
-        </tr>
+        <tr><td>≥ +10 + ATR High</td><td>🔥 Fully Aligned Bullish · Sovereign Momentum</td><td>Full protocol. TP1 → TP2 → TP3 → Holder Mode.</td></tr>
+        <tr><td>+6 to +9</td><td>🟢 Confident Bullish Bias</td><td>Execute. Standard TP protocol.</td></tr>
+        <tr><td>+4 to +5</td><td>🟡 Marginal Bull — minimum edge</td><td>TP1 only. Protect capital.</td></tr>
+        <tr><td>-3 to +3</td><td>⚪ Neutral — no directional edge</td><td>Stand aside. Wait for alignment. No trade.</td></tr>
+        <tr><td>-4 to -5</td><td>🟠 Marginal Bear — minimum edge</td><td>TP1 only. Protect capital.</td></tr>
+        <tr><td>-6 to -9</td><td>🔴 Confident Bearish Bias</td><td>Execute. Standard TP protocol.</td></tr>
+        <tr><td>≤ -10 + ATR High</td><td>🔥 Fully Aligned Bearish · Sovereign Momentum</td><td>Full protocol. TP1 → TP2 → TP3 → Holder Mode.</td></tr>
       </tbody>
     </table>
   </div>
 </section>
 
-<hr class="rule">
-
-<!-- ── WHO IS THIS FOR ── -->
-<section class="tight">
+<!-- PATHS -->
+<section style="background:var(--bg2);border-top:1px solid var(--bdr);padding:88px 0;">
   <div class="container">
-    <div class="section-header">
-      <div class="tag">Operator Fit</div>
-      <h2>This is for operators.<br>Not everyone qualifies.</h2>
-    </div>
-    <div class="for-grid">
-      <div class="for-card yes">
-        <h3>This is for you if —</h3>
-        <ul>
-          <li>You have tried signals and losses have taught you that someone else's calls will never build your account.</li>
-          <li>You want to understand <em>why</em> a trade fires, not just that it fired.</li>
-          <li>You are willing to spend 5 days learning a framework before you trade a single live position.</li>
-          <li>You have $75 to deposit on Deriv, or want to build via a prop firm challenge instead of risking your own capital.</li>
-          <li>You can follow a system. Not modify it. Not second-guess it every session. Follow it.</li>
-          <li>You are in Nairobi, or anywhere in Africa, and you are serious about converting your skills into income.</li>
-        </ul>
-      </div>
-      <div class="for-card no">
-        <h3>This is NOT for you if —</h3>
-        <ul>
-          <li>You want someone to trade for you. The agent fires signals. You execute. That is the deal.</li>
-          <li>You want guaranteed profits. This is a framework for precision. Markets are still markets.</li>
-          <li>You are unwilling to demo trade for at least one week before going live. The masterclass is not optional.</li>
-          <li>You will modify the agent parameters without understanding what each one does. That is a crash.</li>
-          <li>You expect the tool to compensate for poor risk management. The Platinum Risk Model is there — you must use it.</li>
-          <li>You are looking for a get-rich-quick setup. This is a skill. Skills take time to build.</li>
-        </ul>
-      </div>
-    </div>
-  </div>
-</section>
-
-<hr class="rule">
-
-<!-- ── ACCESS PATHS ── -->
-<section>
-  <div class="container">
-    <div class="section-header">
+    <div class="sec-head center">
       <div class="tag">Operator Access</div>
-      <h2>Three paths in.<br>Same intelligence. No tiers.</h2>
-      <p>Every path gives you the same agent, the same 1:1 onboarding, and the same masterclass. The difference is only how you get access.</p>
+      <h2>Three ways in.<br>Same agent. No tiers.</h2>
+      <p>Every path gives you the same agent loaded on your chart via a 1:1 call, the full masterclass, and access to the live stream. The 1:1 is the gate — not a formality.</p>
     </div>
-
     <div class="paths">
-      <div class="path-card featured">
-        <span class="path-badge free">Most Popular</span>
-        <h3>Deriv Deposit</h3>
+      <div class="path featured">
+        <span class="p-badge pop">Most Common</span>
+        <h3>Deriv New Account</h3>
         <div class="path-price">FREE</div>
-        <div class="path-price-note">with $75 min deposit (~10,000 KES) on a new Deriv account</div>
-        <hr class="path-divider">
+        <div class="path-note">with $75 min deposit (~10,000 KES) on a new Deriv account. Your money stays in your account — it is your trading capital.</div>
+        <hr class="path-div">
         <ul>
-          <li><strong>The Absolute Dollar Agent</strong> — loaded on your TradingView via 1:1 call</li>
-          <li><strong>Full 5-week Masterclass</strong> — delivered by email</li>
-          <li><strong>Risk Cheat Sheet</strong> (XAUUSD · GBPUSD · VOL75)</li>
-          <li><strong>Operator Pocket Card</strong> — your manual trading plan companion</li>
-          <li><strong>Public Telegram access</strong> — watch Emmanuel trade live</li>
-          <li>Your $75 stays in your account — it is your trading capital</li>
+          <li><strong>The Absolute Dollar Agent</strong> — loaded on TradingView via 1:1 call</li>
+          <li><strong>5-Week Masterclass</strong> — delivered by email after verification</li>
+          <li><strong>Risk Cheat Sheet</strong> — XAUUSD · GBPUSD · VOL75</li>
+          <li><strong>Operator Pocket Card</strong> — your manual companion to the agent</li>
+          <li><strong>Public Telegram access</strong> — watch the live stream</li>
+          <li>TradingView free plan sufficient — no premium needed</li>
         </ul>
-        <a class="path-cta gold" href="https://t.me/absolutetrademeister" target="_blank" rel="noopener">Get Started via Telegram</a>
+        <a class="path-btn gold" href="https://t.me/absolutetrademeister" target="_blank" rel="noopener">Get Started via Telegram</a>
       </div>
 
-      <div class="path-card">
-        <span class="path-badge direct">Direct Fee</span>
-        <h3>Existing Account</h3>
+      <div class="path">
+        <span class="p-badge fee">Direct Fee</span>
+        <h3>Existing Deriv Account</h3>
         <div class="path-price">$39</div>
-        <div class="path-price-note">or KES 5,000 · one-time setup fee</div>
-        <hr class="path-divider">
-        <ul>
-          <li><strong>The Absolute Dollar Agent</strong> — loaded on your TradingView via 1:1 call</li>
-          <li><strong>Full 5-week Masterclass</strong> — delivered by email</li>
-          <li><strong>Risk Cheat Sheet</strong> for your existing assets</li>
-          <li><strong>Operator Pocket Card</strong></li>
-          <li><strong>Public Telegram access</strong></li>
-          <li>For traders who already have a Deriv account active</li>
-        </ul>
-        <a class="path-cta outline" href="https://t.me/absolutetrademeister" target="_blank" rel="noopener">Message for Setup</a>
-      </div>
-
-      <div class="path-card">
-        <span class="path-badge prop">Prop Firm</span>
-        <h3>Prop Firm Route</h3>
-        <div class="path-price">FREE</div>
-        <div class="path-price-note">via SureLeverage or Atlas Funded challenge</div>
-        <hr class="path-divider">
+        <div class="path-note">or KES 5,000 · one-time setup fee · for traders who already have a Deriv account active</div>
+        <hr class="path-div">
         <ul>
           <li><strong>The Absolute Dollar Agent</strong> — loaded via 1:1 call</li>
-          <li><strong>Full 5-week Masterclass</strong></li>
-          <li><strong>Prop Firm Accelerator guidance</strong> — rules, drawdown, news protocol</li>
+          <li><strong>5-Week Masterclass</strong> — full content, same as all paths</li>
+          <li><strong>Risk Cheat Sheet</strong> for your current assets</li>
+          <li><strong>Operator Pocket Card</strong></li>
+          <li><strong>Public Telegram access</strong></li>
+        </ul>
+        <a class="path-btn line" href="https://t.me/absolutetrademeister" target="_blank" rel="noopener">Message for Setup</a>
+      </div>
+
+      <div class="path">
+        <span class="p-badge prop">Prop Firm</span>
+        <h3>Prop Firm Route</h3>
+        <div class="path-price">FREE</div>
+        <div class="path-note">via SureLeverage or Atlas Funded · $5K–$10K 1-step instant funded challenge</div>
+        <hr class="path-div">
+        <ul>
+          <li><strong>The Absolute Dollar Agent</strong> — loaded via 1:1 call</li>
+          <li><strong>5-Week Masterclass</strong></li>
+          <li><strong>Prop Firm Accelerator guidance</strong> — drawdown rules, news protocol, challenge execution</li>
           <li><strong>Operator Pocket Card</strong></li>
           <li>For traders who want leverage without risking personal capital first</li>
-          <li>Recommended: $5K–$10K 1-step instant funded challenge</li>
         </ul>
-        <a class="path-cta outline" href="https://t.me/absolutetrademeister" target="_blank" rel="noopener">Message for Setup</a>
+        <a class="path-btn line" href="https://t.me/absolutetrademeister" target="_blank" rel="noopener">Message for Setup</a>
       </div>
     </div>
-
-    <p style="text-align:center;margin-top:28px;font-size:13px;color:var(--muted);">
-      All paths include a 1:1 onboarding call. The agent is loaded on your TradingView Pine Editor during that call.<br>
-      TradingView free plan is sufficient. No premium subscription required.
-    </p>
+    <p style="text-align:center;font-size:12px;color:var(--muted);margin-top:20px;">All paths require verification via Telegram. The agent is delivered during the 1:1 onboarding call. TradingView free plan is sufficient.</p>
   </div>
 </section>
 
-<hr class="rule">
-
-<!-- ── MASTERCLASS ── -->
-<section class="tight">
-  <div class="container">
-    <div class="section-header">
-      <div class="tag">The Masterclass</div>
-      <h2>5 days. Repeatable.<br>Built by the agent, for the operator.</h2>
-      <p>The masterclass is not theory. It is the agent's own framework — externalized so the operator understands the intelligence before trading a single live position.</p>
-    </div>
-
-    <div class="week-grid">
-      <div class="week-card">
-        <div class="week-num">Week 01</div>
-        <div class="week-title">Risk &amp; Architecture</div>
-        <div class="week-sub">Platinum Risk Model · 17 Subsystems · Autopsy</div>
-        <div class="days">
-          <span class="day">M</span><span class="day">T</span><span class="day">W</span><span class="day">T</span><span class="day">F</span>
-        </div>
-      </div>
-      <div class="week-card">
-        <div class="week-num">Week 02</div>
-        <div class="week-title">Top-Down Analysis</div>
-        <div class="week-sub">V.WAP · Structure · PDH/PDL · Fib Trend</div>
-        <div class="days">
-          <span class="day">M</span><span class="day">T</span><span class="day">W</span><span class="day">T</span><span class="day">F</span>
-        </div>
-      </div>
-      <div class="week-card">
-        <div class="week-num">Week 03</div>
-        <div class="week-title">M15 Tactical Map</div>
-        <div class="week-sub">BSL/SSL · Volume Profile · ATR Matrix</div>
-        <div class="days">
-          <span class="day">M</span><span class="day">T</span><span class="day">W</span><span class="day">T</span><span class="day">F</span>
-        </div>
-      </div>
-      <div class="week-card">
-        <div class="week-num">Week 04</div>
-        <div class="week-title">M5/M1 Execution</div>
-        <div class="week-sub">Signal Lifecycle · 6-Check Gate · TP Protocol</div>
-        <div class="days">
-          <span class="day">M</span><span class="day">T</span><span class="day">W</span><span class="day">T</span><span class="day">F</span>
-        </div>
-      </div>
-      <div class="week-card">
-        <div class="week-num">Week 05</div>
-        <div class="week-title">Integration</div>
-        <div class="week-sub">Full System · Session Workflow · Performance</div>
-        <div class="days">
-          <span class="day">M</span><span class="day">T</span><span class="day">W</span><span class="day">T</span><span class="day">F</span>
-        </div>
-      </div>
-    </div>
-
-    <div class="delivers-grid">
-      <div class="deliver-item">
-        <div class="deliver-icon">📋</div>
-        <div class="deliver-text">
-          <h4>Operator Pocket Card</h4>
-          <p>Your manual companion to the agent. 3-pocket framework — Analysis, Capital, Execution — in the agent's exact language. Fill it before every trade.</p>
-        </div>
-      </div>
-      <div class="deliver-item">
-        <div class="deliver-icon">📊</div>
-        <div class="deliver-text">
-          <h4>Risk Cheat Sheet (per asset)</h4>
-          <p>XAUUSD · GBPUSD · VOL75. Position size tables, pip values, ATR context guides, and common mistakes — all reverse-engineered from the Platinum Risk Model.</p>
-        </div>
-      </div>
-      <div class="deliver-item">
-        <div class="deliver-icon">📅</div>
-        <div class="deliver-text">
-          <h4>Weekly Journal Template</h4>
-          <p>Monday bias to Friday autopsy. Track every signal, every decision, every SL hit. The journal is how you improve — not by watching more YouTube.</p>
-        </div>
-      </div>
-      <div class="deliver-item">
-        <div class="deliver-icon">📡</div>
-        <div class="deliver-text">
-          <h4>Telegram Broadcast Templates</h4>
-          <p>Pre-session card · Signal brief · TP/SL updates — all in the agent's own language. Mirrors what Emmanuel posts live in the public channel.</p>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<hr class="rule">
-
-<!-- ── TELEGRAM CTA ── -->
-<div class="tg-section">
+<!-- TG CTA -->
+<div class="tg-block">
   <div class="tag">Live · Every Trading Day</div>
-  <h2>Watch the operator<br>before you become one.</h2>
-  <p>
-    Emmanuel streams live on Telegram every London and NY session — the same agent, the same assets, the same framework you will be learning. Watch a week before deciding.
-  </p>
+  <h2>Come watch before you decide.</h2>
+  <p>Emmanuel streams every London and NY session — same agent, same assets, same framework. The analysis card goes up before the open. The trades run live on screen. No editing. No highlight reel.</p>
   <a class="tg-btn" href="https://t.me/absolutetrademeister" target="_blank" rel="noopener">
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12L8.32 13.617l-2.96-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.828.942z"/></svg>
-    Join — t.me/absolutetrademeister
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12L8.32 13.617l-2.96-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.828.942z"/></svg>
+    t.me/absolutetrademeister
   </a>
-  <div>
-    <span class="tg-live">Live · London 10:00 EAT · NY 15:00 EAT</span>
-  </div>
+  <div><span class="tg-live-badge">London 10:00 EAT · NY 15:00 EAT · Daily</span></div>
 </div>
 
-<!-- ── FAQ ── -->
+<!-- FAQ -->
 <section>
   <div class="container">
-    <div class="section-header">
+    <div class="sec-head center">
       <div class="tag">Questions</div>
-      <h2>What operators ask<br>before they join.</h2>
+      <h2>What people ask<br>before they join.</h2>
     </div>
     <div class="faq">
       <div class="faq-item">
-        <button class="faq-q">Do I need TradingView Premium to use the agent? <span class="faq-icon">+</span></button>
-        <div class="faq-a">No. The agent loads on the TradingView free plan via the Pine Editor. A TradingView account is required — but no paid subscription. If you want the agent to broadcast signals to Telegram automatically, TradingView Premium is needed for alerts — but this is optional. You can operate the agent manually on a free account.</div>
+        <button class="faq-q">Do I need TradingView Premium? <span class="faq-icon">+</span></button>
+        <div class="faq-a">No. The agent runs on a free TradingView account, loaded through the Pine Editor during your 1:1 call. If you want the agent to auto-broadcast alerts to Telegram, TradingView Premium is required — but this is optional. You can operate it fully manually on a free plan.</div>
       </div>
       <div class="faq-item">
-        <button class="faq-q">What assets does the agent trade? <span class="faq-icon">+</span></button>
-        <div class="faq-a">The agent is asset-agnostic — the Platinum Risk Model routes correctly for <strong>XAUUSD</strong> (Gold, Pepperstone), <strong>GBPUSD</strong> (Forex Major, prop firm accounts), and <strong>VOL75</strong> (Deriv Synthetic Index). Emmanuel primarily operates on these three. Risk cheat sheets for all three are included in the masterclass package.</div>
+        <button class="faq-q">Is the $75 Deriv deposit going to ADI? <span class="faq-icon">+</span></button>
+        <div class="faq-a">No. The $75 goes into <strong>your own Deriv account</strong> — it is your trading capital. ADI earns an affiliate commission from Deriv on referred deposits. Your money is yours from the moment you deposit it.</div>
       </div>
       <div class="faq-item">
-        <button class="faq-q">Is the $75 Deriv deposit refundable? Does it go to ADI? <span class="faq-icon">+</span></button>
-        <div class="faq-a">The $75 goes into <strong>your Deriv account</strong> — it is your trading capital. ADI does not receive it. ADI earns an affiliate commission from Deriv for the referred deposit. Your money is yours. The deposit gives you access to the markets and, via the affiliate arrangement, access to the agent setup and masterclass at no additional charge.</div>
+        <button class="faq-q">Why can't I just get the code without the 1:1 call? <span class="faq-icon">+</span></button>
+        <div class="faq-a">"If I gave you a jet, you would crash it." The 1:1 call is the gate because the code without the intelligence is nothing. Operators who skip the framework consistently blow accounts and blame the tool. The call ensures the agent is set up correctly and you understand the system before you touch live capital.</div>
       </div>
       <div class="faq-item">
-        <button class="faq-q">Can I just get the agent code without the 1:1 call? <span class="faq-icon">+</span></button>
-        <div class="faq-a">No. And this is intentional. <strong>"If I gave you a jet, you would crash it."</strong> The 1:1 call exists to ensure the agent is set up correctly and the operator understands the framework before touching live capital. The code without the intelligence is not the product. The 1:1 is the gate.</div>
+        <button class="faq-q">What does the masterclass cover? <span class="faq-icon">+</span></button>
+        <div class="faq-a">Five days, repeatable for 3–4 weeks. Week 1: Platinum Risk Model and agent architecture. Week 2: Top-down analysis — H4 to M5. Week 3: M15 tactical liquidity mapping. Week 4: M5/M1 execution and the 6-check confluence gate. Week 5: Full session workflow integration and performance tracking. You demo trade alongside the masterclass — no live capital until the framework is understood.</div>
       </div>
       <div class="faq-item">
-        <button class="faq-q">What does the live stream look like? <span class="faq-icon">+</span></button>
-        <div class="faq-a">Emmanuel shares his TradingView screen on Telegram live during London (10:00–13:00 EAT) and NY (15:00–18:00 EAT) sessions. The same agent you receive is what is on screen. Pre-session analysis cards are posted before the stream. When a signal fires, the full operator card is worked through live. This is not entertainment — it is a demonstration of the framework in real market conditions.</div>
+        <button class="faq-q">What assets does the agent work on? <span class="faq-icon">+</span></button>
+        <div class="faq-a"><strong>XAUUSD</strong> (Gold Spot on Pepperstone), <strong>GBPUSD</strong> (Forex on prop firm accounts), and <strong>VOL75</strong> (Deriv Synthetic Index). Emmanuel operates primarily on these three. Risk cheat sheets for all three are included in the masterclass package. The agent is asset-agnostic — the Platinum Risk Model routes correctly for each.</div>
       </div>
       <div class="faq-item">
-        <button class="faq-q">I already have a Deriv account. What do I do? <span class="faq-icon">+</span></button>
-        <div class="faq-a">Message on Telegram and pay the direct setup fee of $39 / KES 5,000. You receive the same package — agent setup, full masterclass, pocket card, risk cheat sheets — with a 1:1 onboarding call included.</div>
+        <button class="faq-q">I am in Nairobi with limited capital. Is this realistic? <span class="faq-icon">+</span></button>
+        <div class="faq-a">This was built in Nairobi for that exact situation. VOL75 on Deriv allows you to trade from a $25 micro account with 0.001 lot sizing. The risk model routes correctly at any account size. The prop firm path removes the capital barrier entirely — you get funded leverage without risking personal savings. Start where you are. The framework scales with you.</div>
       </div>
     </div>
   </div>
 </section>
 
-<hr class="rule">
-
-<!-- ── FINAL CTA ── -->
-<section style="padding:100px 0;text-align:center;">
+<!-- FINAL CTA -->
+<section style="padding:88px 0;text-align:center;background:var(--bg2);border-top:1px solid var(--bdr);">
   <div class="container">
     <div class="tag">One Decision</div>
-    <h2 style="font-size:clamp(32px,5vw,52px);font-weight:800;margin-bottom:20px;max-width:640px;margin-left:auto;margin-right:auto;">
-      Stop trading.<br><span class="gold">Start operating.</span>
-    </h2>
-    <p style="font-size:18px;color:var(--gray);max-width:520px;margin:0 auto 40px;">
-      The agent does the analysis. You bring the capital and pull the trigger. The masterclass gives you the intelligence to know when — and when not to.
-    </p>
+    <h2 style="font-size:clamp(28px,4.5vw,48px);font-weight:900;line-height:1.1;margin-bottom:18px;letter-spacing:-1px;">Stop trading.<br><span class="gold">Start operating.</span></h2>
+    <p style="font-size:16px;color:var(--gray);max-width:500px;margin:0 auto 36px;line-height:1.75;">The analysis is done by 09:43. Capital is allocated. All that remains is the discipline to wait for London — and execute when the gate says go.</p>
     <a class="tg-btn" href="https://t.me/absolutetrademeister" target="_blank" rel="noopener">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12L8.32 13.617l-2.96-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.828.942z"/></svg>
-      Join on Telegram
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12L8.32 13.617l-2.96-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.828.942z"/></svg>
+      Join — t.me/absolutetrademeister
     </a>
   </div>
 </section>
 
-<!-- ── FOOTER ── -->
 <footer>
-  <div class="footer-logo">Absolute Dollar Intelligence</div>
-  <p class="footer-disc">
-    © ADI 2026 · Nairobi, Kenya · Not financial advice. The Absolute Dollar Agent is an augmented intelligence decision support system. Trading involves significant risk of loss. Past performance is not indicative of future results. All figures cited are from controlled test periods and do not constitute a guarantee of performance. Trade responsibly. Never risk capital you cannot afford to lose.
-  </p>
+  <div class="footer-logo">Absolute Dollar Intelligence · Nairobi</div>
+  <p class="footer-disc">© ADI 2026 · Not financial advice. The Absolute Dollar Agent is an augmented intelligence decision support system built on TradingView Pine Script. Trading financial instruments involves significant risk of loss. Past performance figures cited (PF 6.32, +1,448 pts, 12W/3L, +10% demo) are from specific controlled test periods and do not constitute a guarantee of future results. Never risk capital you cannot afford to lose. Trade responsibly.</p>
 </footer>
 
 <script>
-// FAQ accordion
 document.querySelectorAll('.faq-q').forEach(btn => {
   btn.addEventListener('click', () => {
     const item = btn.closest('.faq-item');
@@ -1130,21 +740,19 @@ document.querySelectorAll('.faq-q').forEach(btn => {
   });
 });
 
-// Stat counter animation
-const counters = document.querySelectorAll('.proof-num');
+// Animate stats on scroll
 const observer = new IntersectionObserver(entries => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      entry.target.style.opacity = '1';
-      entry.target.style.transform = 'translateY(0)';
-      observer.unobserve(entry.target);
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.style.opacity = '1';
+      e.target.style.transform = 'translateY(0)';
     }
   });
-}, { threshold: 0.3 });
-counters.forEach(el => {
+}, { threshold: 0.2 });
+document.querySelectorAll('.pocket, .path, .what-card').forEach(el => {
   el.style.opacity = '0';
-  el.style.transform = 'translateY(10px)';
-  el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+  el.style.transform = 'translateY(16px)';
+  el.style.transition = 'opacity .4s ease, transform .4s ease';
   observer.observe(el);
 });
 </script>
